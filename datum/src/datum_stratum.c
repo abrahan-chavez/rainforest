@@ -1686,7 +1686,7 @@ int client_mining_subscribe(T_DATUM_CLIENT_DATA *c, uint64_t id, json_t *params_
 	}
 	
 	// set default diff
-	m->current_diff = datum_config.stratum_v1_vardiff_min;
+	m->current_diff = 8;
 	
 	// default to the antminer workaround, which appears to be universally compatible
 	// except for NiceHash.
