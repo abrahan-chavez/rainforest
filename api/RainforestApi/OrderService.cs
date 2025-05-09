@@ -38,7 +38,8 @@ public class OrderService(ProductService productService, DatumService datumServi
             StratumUrl = _stratumUrl,
             User = $"worker_{orderId}",
             Password = _password,
-            OrderProgress = 0
+            QuotedAcceptedSharePrice = product.PriceInAcceptedShares,
+            AcceptedShares = 0
         };
 
         _orders.Add(order);

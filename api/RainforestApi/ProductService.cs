@@ -20,7 +20,7 @@ public class ProductService
             Name = productRequest.Name,
             Description = productRequest.Description,
             ImageUrl = productRequest.ImageUrl,
-            PriceInShares = productRequest.PriceInShares
+            PriceInAcceptedShares = productRequest.PriceInAcceptedShares
         };
 
         _products.Add(product);

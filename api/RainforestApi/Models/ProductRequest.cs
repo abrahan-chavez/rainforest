@@ -6,5 +6,5 @@ public record ProductRequest
     public string? Description { get; init; } = null!;
     public string? ImageUrl { get; init; } = null!;
 
-    public decimal PriceInShares { get; init; }
+    public decimal PriceInAcceptedShares { get; init; }
 }

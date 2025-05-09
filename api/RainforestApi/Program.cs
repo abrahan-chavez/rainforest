@@ -13,6 +13,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<ProductService>();
 builder.Services.AddSingleton<DatumService>();
+builder.Services.AddHostedService<BackgroundTrackingService>();
 
 builder.Services.AddProblemDetails();
 

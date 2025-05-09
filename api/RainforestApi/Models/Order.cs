@@ -19,8 +19,9 @@ public record Order
     public required string StratumUrl { get; init; }
     public required string User { get; init; }
     public required string Password { get; init; }
-    
-    public decimal OrderProgress { get; init; }
+
+    public decimal AcceptedShares { get; init; }
+    public decimal QuotedAcceptedSharePrice { get; init; }
 }
 
 public enum OrderStatus
