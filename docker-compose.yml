@@ -8,6 +8,14 @@ services:
       - ./bitcoin/bitcoin.conf:/home/bitcoin/.bitcoin/bitcoin.conf
     ports:
       - "18443:18443"
+    entrypoint: ["/bin/bash", "-c"]
+    command: >
+      "
+      bitcoind -regtest -conf=/home/bitcoin/.bitcoin/bitcoin.conf -daemon &&
+      sleep 3 &&
+      bitcoin-cli -regtest -rpcuser=rainforrest -rpcpassword=devpassword createwallet rainforrest || true &&
+      tail -f /dev/null
+      "
     restart: unless-stopped
 
   # ‑‑‑ DATUM Gateway – public Stratum endpoint ‑‑‑
