@@ -11,8 +11,8 @@ interface Order {
   orderId: string;
   productId: string;
   email: string;
-  address: string;
-  status: "mining" | "completed" | "shipped";
+  streetAddress: string;
+  status: "Created" | "Mining" | "Completed" | "Shipped";
   progress: number;
   stratumUrl: string;
   workerName: string;
@@ -25,7 +25,16 @@ interface StoreContextType {
   filteredProducts: Product[];
   getProduct: (id: string) => Product | undefined;
   getOrder: (id: string) => Order | undefined;
-  createOrder: (productId: string, email: string, address: string) => Order;
+  createOrder: (
+    productId: string,
+    email: string,
+    fullName: string,
+    streetAddress: string,
+    city: string,
+    state: string,
+    zip: string,
+    country: string
+  ) => Order;
   updateOrderProgress: (id: string, progress: number) => void;
   createProduct: (product: Omit<Product, "id">) => Product;
   updateProduct: (id: string, product: Partial<Product>) => void;
@@ -53,6 +62,22 @@ export const StoreProvider: React.FC<{
     fetchProducts();
   }, []);
   const [orders, setOrders] = useState<Order[]>([]);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:5030/orders");
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+        const data: Order[] = await response.json();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
   const [searchQuery, setSearchQuery] = useState("");
   const filteredProducts = products.filter((product) => {
     const searchLower = searchQuery.toLowerCase();
@@ -67,38 +92,44 @@ export const StoreProvider: React.FC<{
   const getOrder = (id: string) => {
     return orders.find((order) => order.orderId === id);
   };
-  const createOrder = (
+  const createOrder = async (
     productId: string,
-    email: string,
-    address: string
-  ): Order => {
-    const newOrder: Order = {
-      orderId: `order_${Date.now()}`,
+    emailAddress: string,
+    fullName: string,
+    streetAddress: string,
+    city: string,
+    state: string,
+    zipCode: string,
+    country: string
+  ): Promise<Order | undefined> => {
+    const orderRequest = {
       productId,
-      email,
-      address,
-      status: "mining",
-      progress: 0,
-      stratumUrl: `stratum+tcp://mine.rainforrest.local:3333`,
-      workerName: `worker_${Date.now()}`,
+      emailAddress,
+      fullName,
+      streetAddress,
+      city,
+      state,
+      zipCode,
+      country,
     };
-    setOrders([...orders, newOrder]);
-    return newOrder;
-  };
-  const updateOrderProgress = (id: string, progress: number) => {
-    setOrders(
-      orders.map((order) => {
-        if (order.orderId === id) {
-          const status = progress >= 100 ? "completed" : "mining";
-          return {
-            ...order,
-            progress,
-            status,
-          };
-        }
-        return order;
-      })
-    );
+
+    try {
+      const response = await fetch("http://localhost:5030/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderRequest),
+      });
+
+      const data = await response.json();
+
+      setOrders([...orders, data]);
+      return data;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      return undefined;
+    }
   };
   const createProduct = (product: Omit<Product, "id">): Product => {
     const newProduct = {
@@ -132,7 +163,6 @@ export const StoreProvider: React.FC<{
     getProduct,
     getOrder,
     createOrder,
-    updateOrderProgress,
     createProduct,
     updateProduct,
     deleteProduct,

@@ -16,7 +16,7 @@ export const AdminProductFormPage = () => {
     name: '',
     description: '',
     priceUSD: '',
-    hashesRequired: '',
+    priceInAcceptedShares: '',
     image: ''
   });
   useEffect(() => {
@@ -27,7 +27,7 @@ export const AdminProductFormPage = () => {
           name: product.name,
           description: product.description,
           priceUSD: product.priceUSD.toString(),
-          hashesRequired: product.hashesRequired.toString(),
+          priceInAcceptedShares: product.priceInAcceptedShares.toString(),
           image: product.image
         });
       }
@@ -39,7 +39,7 @@ export const AdminProductFormPage = () => {
       name: formData.name,
       description: formData.description,
       priceUSD: parseFloat(formData.priceUSD),
-      hashesRequired: parseInt(formData.hashesRequired),
+      priceInAcceptedShares: parseInt(formData.priceInAcceptedShares),
       image: formData.image
     };
     if (id) {

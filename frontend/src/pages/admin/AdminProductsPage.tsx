@@ -35,15 +35,15 @@ export const AdminProductsPage = () => {
                       </div>
                       <div className="text-sm text-slate-500">
                         ${product.priceUSD} ·{' '}
-                        {product.hashesRequired.toLocaleString()} hashes
+                        {product.priceInAcceptedShares.toLocaleString()} shares
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Link to={`/admin/products/edit/${product.id}`} className="inline-flex items-center p-2 border border-transparent rounded-md text-sm text-slate-500 hover:text-blue-600 hover:bg-blue-50">
+                    <Link to={`/admin/products/edit/${product.productId}`} className="inline-flex items-center p-2 border border-transparent rounded-md text-sm text-slate-500 hover:text-blue-600 hover:bg-blue-50">
                       <PencilIcon size={16} />
                     </Link>
-                    <button onClick={() => handleDelete(product.id)} className="inline-flex items-center p-2 border border-transparent rounded-md text-sm text-slate-500 hover:text-red-600 hover:bg-red-50">
+                    <button onClick={() => handleDelete(product.productId)} className="inline-flex items-center p-2 border border-transparent rounded-md text-sm text-slate-500 hover:text-red-600 hover:bg-red-50">
                       <TrashIcon size={16} />
                     </button>
                   </div>
