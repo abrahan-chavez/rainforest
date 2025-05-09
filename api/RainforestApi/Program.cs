@@ -1,3 +1,6 @@
+using RainforestApi;
+using RainforestApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,29 +19,30 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+var orderService = new OrderService();
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/orders", () =>
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
+        var orders = orderService.GetOrders();
+        return orders;
     })
-    .WithName("GetWeatherForecast")
+    .WithName("GetOrders")
+    .WithOpenApi();
+
+app.MapPost("/orders/", (OrderRequest request) =>
+    {
+        var order = orderService.CreateOrder(request);
+        return order;
+    })
+    .WithName("CreateOrder")
+    .WithOpenApi();
+
+app.MapGet("/orders/{orderId}", (string orderId) =>
+    {
+        var order = orderService.GetOrder(orderId);
+        return order;
+    })
+    .WithName("GetOrder")
     .WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
