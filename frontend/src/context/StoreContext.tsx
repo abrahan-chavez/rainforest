@@ -48,7 +48,7 @@ export const StoreProvider: React.FC<{
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://44.202.35.139:5030/products");
+        const response = await fetch("http://localhost:5030/products");
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
@@ -65,7 +65,7 @@ export const StoreProvider: React.FC<{
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://44.202.35.139:5030/orders");
+        const response = await fetch("http://localhost:5030/orders");
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }
@@ -90,13 +90,16 @@ export const StoreProvider: React.FC<{
     return products.find((product) => product.productId === id);
   };
   const getOrder = async (id: string) => {
-    return await fetch(`http://44.202.35.139:5030/orders/${id}`)
-      .then((response) => {
+    const order = await fetch(`http://localhost:5030/orders/${id}`).then(
+      (response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch order");
         }
-        return response.json();
-      });
+        const data = response.json();
+        return data;
+      }
+    );
+    return order as Order;
   };
   const createOrder = async (
     productId: string,
@@ -120,7 +123,7 @@ export const StoreProvider: React.FC<{
     };
 
     try {
-      const response = await fetch("http://44.202.35.139:5030/orders", {
+      const response = await fetch("http://localhost:5030/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
