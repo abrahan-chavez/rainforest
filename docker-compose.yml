@@ -5,16 +5,18 @@ services:
   bitcoin:
     build: ./bitcoin
     volumes:
-      - btc_data:/home/bitcoin/.bitcoin
+      - ./bitcoin/bitcoin.conf:/home/bitcoin/.bitcoin/bitcoin.conf
     ports:
-      - "18443:18443"     # regtest RPC
+      - "18443:18443"
     restart: unless-stopped
 
   # ‑‑‑ DATUM Gateway – public Stratum endpoint ‑‑‑
   datum:
     build: ./datum
     environment:
-      BITCOIN_RPC_URL: "http://rainforrest:devpassword@bitcoin:18443"
+      - BITCOIN_RPC_USER=rainforrest
+      - BITCOIN_RPC_PASS=devpassword
+      - BITCOIN_RPC_URL=http://rainforrest:devpassword@bitcoin:18443
     ports:
       - "23334:23334"     # Stratum V1 for miners
       - "8080:8080"       # DATUM web/API UI
@@ -61,6 +63,15 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+    
+  cpuminer:
+    build: ./cpuminer
+    depends_on:
+      - datum
+    restart: unless-stopped
+    environment:
+      STRATUM_URL: stratum+tcp://datum:23334
+      WORKER_NAME: demo.order-cpuminer
 
 volumes:
   btc_data:

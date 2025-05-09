@@ -34,3 +34,13 @@ Front‑end polling ⇒ GET /order/<uuid> from FastAPI to show live shares & ful
 
 Switch to OCEAN ⇒ edit datum_gateway_config.json → set pool_host & pooled_mining_only:true, then docker compose restart datum.
 
+
+
+Run this once:
+
+docker exec -it $(docker ps -qf name=bitcoin) \
+  bitcoin-cli -regtest createwallet rainforrest
+Then:
+
+docker exec -it $(docker ps -qf name=bitcoin) \
+  bitcoin-cli -regtest getnewaddress
