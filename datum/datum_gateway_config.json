@@ -6,7 +6,11 @@
     "notify_fallback": true
   },
   "stratum": {
-    "listen_port": 23334
+    "listen_port": 23334,
+    "vardiff_min": 0.1,
+    "vardiff_target_shares_min": 6,
+    "vardiff_quickdiff_count": 2,
+    "vardiff_quickdiff_delta": 1
   },
   "mining": {
     "pool_address": "bcrt1q2xftpe3juuqluw580etkhqz8xpd4dswn05c8mj",
@@ -23,5 +27,6 @@
     "override_vardiff_min": 8,
     "override_vardiff_start": 8,
     "datum_always_pay_self": true
+
   }
 }
