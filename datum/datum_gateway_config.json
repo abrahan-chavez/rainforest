@@ -19,6 +19,10 @@
   },
   "datum": {
     "pooled_mining_only": false,
-    "pool_host": ""
+    "pool_host": "",
+    "override_vardiff_min": 8,
+    "datum_always_pay_self": true
+
+
   }
 }
