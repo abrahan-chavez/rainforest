@@ -2,7 +2,7 @@ using RainforestApi.Models;
 
 namespace RainforestApi;
 
-public class OrderService(ProductService productService)
+public class OrderService(ProductService productService, DatumService datumService)
 {
     private readonly List<Order> _orders = [];
     private readonly string _stratumUrl = "stratum+tcp://mine.rainforrest.local:3333";
@@ -46,8 +46,9 @@ public class OrderService(ProductService productService)
         return order;
     }
 
-    public Order GetOrder(string orderId)
+    public async Task<Order> GetOrder(string orderId)
     {
-        return _orders.Single(o => o.OrderId == orderId);
+        var order = _orders.Single(o => o.OrderId == orderId);
+        return order;
     }
 }

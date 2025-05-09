@@ -9,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddSingleton<ProductService>();
+builder.Services.AddSingleton<DatumService>();
 
 builder.Services.AddProblemDetails();
 
@@ -43,10 +45,10 @@ app.MapPost("/orders/", (OrderRequest request) =>
     .WithName("CreateOrder")
     .WithOpenApi();
 
-app.MapGet("/orders/{orderId}", (string orderId) =>
+app.MapGet("/orders/{orderId}", async (string orderId) =>
     {
         var orderService = app.Services.GetRequiredService<OrderService>();
-        var order = orderService.GetOrder(orderId);
+        var order = await orderService.GetOrder(orderId);
         return order;
     })
     .WithName("GetOrder")
