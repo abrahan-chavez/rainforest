@@ -1802,8 +1802,8 @@ int datum_api_clients_json(struct MHD_Connection *connection) {
             if (m->subscribed) {
                 json_object_set_new(client, "subscribe_secs", json_real((tsms - m->subscribe_tsms) / 1000.0));
                 json_object_set_new(client, "diff", json_integer(m->current_diff));
-                json_object_set_new(client, "accepted_diff", json_integer(m->share_diff_accepted));
-                json_object_set_new(client, "rejected_diff", json_integer(m->share_diff_rejected));
+                json_object_set_new(client, "accepted_diff", json_integer(m->share_diff_rejected));
+                json_object_set_new(client, "rejected_diff", json_integer(m->share_diff_accepted));
                 json_object_set_new(client, "accepted_shares", json_integer(m->share_count_accepted));
                 json_object_set_new(client, "rejected_shares", json_integer(m->share_count_rejected));
 
