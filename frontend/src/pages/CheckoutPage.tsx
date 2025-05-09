@@ -9,16 +9,15 @@ export const CheckoutPage = () => {
     id: string;
   }>();
   const navigate = useNavigate();
-  const { getProduct, createOrder } = useStore();
+  const { getProduct, createOrder, getOrder } = useStore();
   const [order, setOrder] = useState<any>(null);
   const [progress, setProgress] = useState(0);
   const product = getProduct(id || "");
   useEffect(() => {
     if (order) {
-      // Simulate mining progress
       const interval = setInterval(() => {
-        setProgress((prev) => {
-          const newProgress = prev + Math.random() * 5;
+        setProgress((progress) => {
+          const newProgress = getOrder(order.orderId)?.progress || 0;
           if (newProgress >= 100) {
             clearInterval(interval);
             return 100;

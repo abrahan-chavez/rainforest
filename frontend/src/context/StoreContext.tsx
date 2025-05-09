@@ -89,8 +89,14 @@ export const StoreProvider: React.FC<{
   const getProduct = (id: string) => {
     return products.find((product) => product.productId === id);
   };
-  const getOrder = (id: string) => {
-    return orders.find((order) => order.orderId === id);
+  const getOrder = async (id: string) => {
+    return await fetch(`http://localhost:5030/orders/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch order");
+        }
+        return response.json();
+      });
   };
   const createOrder = async (
     productId: string,

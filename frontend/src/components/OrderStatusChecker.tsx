@@ -25,7 +25,6 @@ export const OrderStatusChecker = ({
     }
     setError('');
     setIsChecking(true);
-    // Simulate a short delay
     setTimeout(() => {
       const checkResult = onCheck(orderId);
       setResult(checkResult);
@@ -37,17 +36,22 @@ export const OrderStatusChecker = ({
   };
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'mining':
+      case 'Created':
+        return <span className="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-medium flex items-center">
+            <ZapIcon size={14} className="mr-1" />
+            Created, but no progress has been made.
+          </span>;
+      case 'Mining':
         return <span className="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-medium flex items-center">
             <ZapIcon size={14} className="mr-1" />
             Mining in Progress
           </span>;
-      case 'completed':
+      case 'Completed':
         return <span className="bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-xs font-medium flex items-center">
             <PackageIcon size={14} className="mr-1" />
             Mining Complete
           </span>;
-      case 'shipped':
+      case 'Shipped':
         return <span className="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-xs font-medium flex items-center">
             <TruckIcon size={14} className="mr-1" />
             Shipped
@@ -82,7 +86,7 @@ export const OrderStatusChecker = ({
                 {result.order.productName}
               </h3>
               <p className="text-sm text-gray-600 mt-1">
-                Order ID: <span className="font-mono">{result.order.id}</span>
+                Order ID: <span className="font-mono">{result.order.orderId}</span>
               </p>
             </div>
             <div>{getStatusLabel(result.order.status)}</div>
@@ -93,7 +97,16 @@ export const OrderStatusChecker = ({
             </p>
             <ProgressBar progress={result.order.progress} />
           </div>
-          {result.order.status === 'mining' && <div className="text-sm bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+          {result.order.status === 'Created' && <div className="text-sm bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+              <p className="font-medium text-amber-800 mb-1">
+                Order Created
+              </p>
+              <p className="text-amber-700">
+                Continue mining with your worker to complete your order. Your
+                product will be prepared once mining is complete.
+              </p>
+            </div>}
+          {result.order.status === 'Mining' && <div className="text-sm bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
               <p className="font-medium text-amber-800 mb-1">
                 Mining in Progress
               </p>
@@ -102,7 +115,7 @@ export const OrderStatusChecker = ({
                 product will be prepared once mining is complete.
               </p>
             </div>}
-          {result.order.status === 'completed' && <div className="text-sm bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+          {result.order.status === 'Completed' && <div className="text-sm bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
               <p className="font-medium text-green-800 mb-1">
                 Mining Complete!
               </p>
@@ -111,7 +124,7 @@ export const OrderStatusChecker = ({
                 soon.
               </p>
             </div>}
-          {result.order.status === 'shipped' && <div className="text-sm bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          {result.order.status === 'Shipped' && <div className="text-sm bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
               <p className="font-medium text-blue-800 mb-1">Order Shipped!</p>
               <p className="text-blue-700">
                 Your order is on its way to you. Expected delivery in 3-5
