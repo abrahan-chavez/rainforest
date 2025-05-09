@@ -93,7 +93,7 @@ export const AdminProductFormPage = () => {
             </div>
             <div>
               <label htmlFor="hashesRequired" className="block text-sm font-medium text-slate-700">
-                Required Shares
+                Required Hashes
               </label>
               <input type="number" name="hashesRequired" id="hashesRequired" required min="0" value={formData.hashesRequired} onChange={handleChange} className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm" />
             </div>

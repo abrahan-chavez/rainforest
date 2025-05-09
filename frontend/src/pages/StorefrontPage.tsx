@@ -24,7 +24,7 @@ export const StorefrontPage = () => {
           <ZapIcon size={24} className="text-white/80" />
           <div>
             <p className="font-medium">Current Hash Price:</p>
-            <p className="text-sm">100K hashes ≈ $10 USD</p>
+            <p className="text-sm">22 Trillion hashes ≈ $1 USD</p>
           </div>
         </div>
       </div>
