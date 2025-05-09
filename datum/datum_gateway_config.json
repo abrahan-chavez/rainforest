@@ -8,9 +8,9 @@
   "stratum": {
     "listen_port": 23334,
     "vardiff_min": 0.1,
-    "vardiff_target_shares_min": 6,
-    "vardiff_quickdiff_count": 2,
-    "vardiff_quickdiff_delta": 1
+    "vardiff_target_shares_min": 0,
+    "vardiff_quickdiff_delta": 1000000
+
   },
   "mining": {
     "pool_address": "bcrt1q2xftpe3juuqluw580etkhqz8xpd4dswn05c8mj",

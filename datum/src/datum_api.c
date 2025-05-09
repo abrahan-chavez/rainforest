@@ -1001,7 +1001,7 @@ size_t datum_api_fill_config_var(const char *var_start, const size_t var_name_le
 		const T_DATUM_CONFIG_ITEM * const item = datum_config_get_option_info(var_start_2, underscore_pos - var_start_2, &underscore_pos[1], var_end - &underscore_pos[1]);
 		if (item) {
 			switch (item->var_type) {
-				case DATUM_CONF_INT: {
+				case DATUM_CONF_DOUBLE: {
 					val = *((int *)item->ptr);
 					break;
 				}
