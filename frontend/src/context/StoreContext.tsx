@@ -1,14 +1,14 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 interface Product {
-  id: string;
+  productId: string;
   name: string;
   description: string;
-  priceUSD: number;
-  hashesRequired: number;
   image: string;
+  priceInAcceptedShares: number;
+  priceUSD: number;
 }
 interface Order {
-  id: string;
+  orderId: string;
   productId: string;
   email: string;
   address: string;
@@ -62,10 +62,10 @@ export const StoreProvider: React.FC<{
     );
   });
   const getProduct = (id: string) => {
-    return products.find((product) => product.id === id);
+    return products.find((product) => product.productId === id);
   };
   const getOrder = (id: string) => {
-    return orders.find((order) => order.id === id);
+    return orders.find((order) => order.orderId === id);
   };
   const createOrder = (
     productId: string,
@@ -73,7 +73,7 @@ export const StoreProvider: React.FC<{
     address: string
   ): Order => {
     const newOrder: Order = {
-      id: `order_${Date.now()}`,
+      orderId: `order_${Date.now()}`,
       productId,
       email,
       address,
@@ -88,7 +88,7 @@ export const StoreProvider: React.FC<{
   const updateOrderProgress = (id: string, progress: number) => {
     setOrders(
       orders.map((order) => {
-        if (order.id === id) {
+        if (order.orderId === id) {
           const status = progress >= 100 ? "completed" : "mining";
           return {
             ...order,
@@ -111,7 +111,7 @@ export const StoreProvider: React.FC<{
   const updateProduct = (id: string, updates: Partial<Product>) => {
     setProducts(
       products.map((product) =>
-        product.id === id
+        product.productId === id
           ? {
               ...product,
               ...updates,
@@ -121,7 +121,7 @@ export const StoreProvider: React.FC<{
     );
   };
   const deleteProduct = (id: string) => {
-    setProducts(products.filter((product) => product.id !== id));
+    setProducts(products.filter((product) => product.productId !== id));
   };
   const value = {
     products,

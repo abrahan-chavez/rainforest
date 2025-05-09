@@ -2,14 +2,14 @@ import React, { lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { DollarSignIcon, ZapIcon } from 'lucide-react';
 interface ProductCardProps {
-  id: string;
+  productId: string;
   name: string;
   image: string;
   priceInAcceptedShares: number;
   priceUSD: number;
 }
 export const ProductCard = ({
-  id,
+  productId,
   name,
   image,
   priceInAcceptedShares,
@@ -41,9 +41,9 @@ export const ProductCard = ({
           </div>
           <div className="flex items-center text-sm text-gray-500">
             <DollarSignIcon size={16} className="mr-2 flex-shrink-0" />
-            <span className="truncate">${priceUSD.toFixed(2)} equivalent</span>
+            <span className="truncate">{priceUSD.toFixed(2)} equivalent</span>
           </div>
-          <Link to={`/product/${id}`} className="mt-4 block w-full py-2.5 px-4 bg-blue-600 text-white text-center rounded-md hover:bg-blue-700 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <Link to={`/product/${productId}`} className="mt-4 block w-full py-2.5 px-4 bg-blue-600 text-white text-center rounded-md hover:bg-blue-700 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             View Details
           </Link>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProductCard } from './ProductCard';
 interface Product {
-  id: string;
+  productId: string;
   name: string;
   image: string;
   priceInAcceptedShares: number;
@@ -14,8 +14,8 @@ export const ProductGrid = ({
   products
 }: ProductGridProps) => {
   return <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {products.map(product => <div key={product.id} className="flex">
-          <ProductCard id={product.id} name={product.name} image={product.image} priceInAcceptedShares={product.priceInAcceptedShares} priceUSD={product.priceUSD} />
+      {products.map(product => <div key={product.productId} className="flex">
+          <ProductCard productId={product.productId} name={product.name} image={product.image} priceInAcceptedShares={product.priceInAcceptedShares} priceUSD={product.priceUSD} />
         </div>)}
     </div>;
 };

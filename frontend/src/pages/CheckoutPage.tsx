@@ -64,10 +64,10 @@ export const CheckoutPage = () => {
                 <div>
                   <h2 className="font-medium text-lg">{product.name}</h2>
                   <p className="text-gray-600 text-sm">
-                    {product.hashesRequired.toLocaleString()} hashes required
+                    {product.priceInAcceptedShares.toLocaleString()} shares required
                   </p>
                   <p className="text-gray-500 text-sm">
-                    (${product.priceUSD.toFixed(2)} equivalent)
+                    ({product.priceUSD.toFixed(2)} equivalent)
                   </p>
                 </div>
               </div>

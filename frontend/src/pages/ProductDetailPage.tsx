@@ -70,12 +70,12 @@ export const ProductDetailPage = () => {
               <div className="bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full flex items-center">
                 <ZapIcon size={16} className="mr-1.5 text-blue-600" />
                 <span className="font-medium">
-                  {formatHashes(product.hashesRequired)} hashes
+                  {formatHashes(product.priceInAcceptedShares)} shares
                 </span>
               </div>
               <div className="text-gray-600 flex items-center">
                 <DollarSignIcon size={16} className="mr-1.5" />
-                <span>${product.priceUSD.toFixed(2)} equivalent</span>
+                <span>{product.priceUSD.toFixed(2)} equivalent</span>
               </div>
             </div>
             <div className="border-t border-b border-gray-200 py-5 my-6">
@@ -105,7 +105,7 @@ export const ProductDetailPage = () => {
               </div>
             </div>
             <button
-              onClick={() => navigate(`/checkout/${product.id}`)}
+              onClick={() => navigate(`/checkout/${product.productId}`)}
               className="w-full py-3 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center"
             >
               <ZapIcon size={18} className="mr-2" />
