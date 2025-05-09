@@ -2,23 +2,30 @@ using RainforestApi.Models;
 
 namespace RainforestApi;
 
-public class OrderService
+public class OrderService(ProductService productService)
 {
     private readonly List<Order> _orders = [];
     private readonly string _stratumUrl = "stratum+tcp://mine.rainforrest.local:3333";
     private readonly string _password = "x";
-    
-    public List<Order> GetOrders()
+
+    public Order[] GetOrders()
     {
-        return _orders;
+        return _orders.ToArray();
     }
-    
+
     public Order CreateOrder(OrderRequest orderRequest)
     {
+        var product = productService.GetProduct(orderRequest.ProductId);
+
+        if (product == null)
+        {
+            throw new ArgumentException($"Product with ID {orderRequest.ProductId} not found.");
+        }
+
         var orderId = Guid.NewGuid().ToString("N");
         var order = new Order
         {
-            ProductId = orderRequest.ProductId,
+            ProductId = product.ProductId,
             OrderId = $"order_{orderId}",
             EmailAddress = orderRequest.EmailAddress,
             FullName = orderRequest.FullName,
@@ -38,7 +45,7 @@ public class OrderService
 
         return order;
     }
-    
+
     public Order GetOrder(string orderId)
     {
         return _orders.Single(o => o.OrderId == orderId);
