@@ -14,20 +14,21 @@ public record Order
     public string ZipCode { get; init; } = null!;
     public string Country { get; init; } = null!;
 
-    public OrderStatus Status { get; init; }
+    public OrderStatus Status { get; set; }
 
     public required string StratumUrl { get; init; }
     public required string User { get; init; }
     public required string Password { get; init; }
 
-    public decimal AcceptedShares { get; init; }
     public decimal QuotedAcceptedSharePrice { get; init; }
+
+    public DatumResponse? MinerResponse { get; set; }
 }
 
 public enum OrderStatus
 {
     Created,
     Processing,
+    Completed,
     Shipped,
-    Cancelled
 }

@@ -5,7 +5,7 @@ namespace RainforestApi;
 public class OrderService(ProductService productService, DatumService datumService)
 {
     private readonly List<Order> _orders = [];
-    private readonly string _stratumUrl = "stratum+tcp://mine.rainforrest.local:3333";
+    private readonly string _stratumUrl = "stratum+tcp://localhost:8080";
     private readonly string _password = "x";
 
     public Order[] GetOrders()
@@ -39,7 +39,6 @@ public class OrderService(ProductService productService, DatumService datumServi
             User = $"worker_{orderId}",
             Password = _password,
             QuotedAcceptedSharePrice = product.PriceInAcceptedShares,
-            AcceptedShares = 0
         };
 
         _orders.Add(order);
@@ -47,7 +46,30 @@ public class OrderService(ProductService productService, DatumService datumServi
         return order;
     }
 
-    public async Task<Order> GetOrder(string orderId)
+    public void UpdateOrderProgress(DatumResponse datumResponse)
+    {
+        var order = _orders.SingleOrDefault(o => o.User == datumResponse.Username);
+        if (order == null)
+        {
+            throw new ArgumentException($"Order with username {datumResponse.Username} not found.");
+        }
+
+        order.MinerResponse = datumResponse;
+
+        if (datumResponse.AcceptedShares > 0 && datumResponse.AcceptedShares < order.QuotedAcceptedSharePrice)
+        {
+            order.Status = OrderStatus.Processing;
+        }
+        else if (datumResponse.AcceptedShares >= order.QuotedAcceptedSharePrice)
+        {
+            order.Status = OrderStatus.Completed;
+        }
+
+        _orders.RemoveAll(o => o.User == datumResponse.Username);
+        _orders.Add(order);
+    }
+
+    public Order GetOrder(string orderId)
     {
         var order = _orders.Single(o => o.OrderId == orderId);
         return order;
