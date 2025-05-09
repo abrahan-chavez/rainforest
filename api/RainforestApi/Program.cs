@@ -16,7 +16,8 @@ builder.Services.AddHttpClient<DatumService>()
     {
         client.BaseAddress = new Uri("http://localhost:8080");
         var credentials = Convert.ToBase64String("admin:demo"u8.ToArray());
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
     });
 builder.Services.AddHostedService<BackgroundTrackingService>();
 

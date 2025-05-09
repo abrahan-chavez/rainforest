@@ -2,7 +2,7 @@ using RainforestApi.Models;
 
 namespace RainforestApi;
 
-public class OrderService(ProductService productService, DatumService datumService)
+public class OrderService(ProductService productService)
 {
     private readonly List<Order> _orders = [];
     private readonly string _stratumUrl = "stratum+tcp://localhost:8080";
@@ -36,7 +36,7 @@ public class OrderService(ProductService productService, DatumService datumServi
             Country = orderRequest.Country,
             Status = OrderStatus.Created,
             StratumUrl = _stratumUrl,
-            User = $"worker_{orderId}",
+            WorkerName = $"worker_{orderId}",
             Password = _password,
             QuotedAcceptedSharePrice = product.PriceInAcceptedShares,
         };
@@ -48,7 +48,7 @@ public class OrderService(ProductService productService, DatumService datumServi
 
     public void UpdateOrderProgress(DatumResponse datumResponse)
     {
-        var order = _orders.SingleOrDefault(o => o.User == datumResponse.Username);
+        var order = _orders.SingleOrDefault(o => o.WorkerName == datumResponse.Username);
         if (order == null)
         {
             throw new ArgumentException($"Order with username {datumResponse.Username} not found.");
@@ -58,14 +58,16 @@ public class OrderService(ProductService productService, DatumService datumServi
 
         if (datumResponse.AcceptedShares > 0 && datumResponse.AcceptedShares < order.QuotedAcceptedSharePrice)
         {
-            order.Status = OrderStatus.Processing;
+            order.Status = OrderStatus.Mining;
         }
         else if (datumResponse.AcceptedShares >= order.QuotedAcceptedSharePrice)
         {
             order.Status = OrderStatus.Completed;
         }
 
-        _orders.RemoveAll(o => o.User == datumResponse.Username);
+        order.Progress = datumResponse.AcceptedShares / order.QuotedAcceptedSharePrice;
+
+        _orders.RemoveAll(o => o.WorkerName == datumResponse.Username);
         _orders.Add(order);
     }
 

@@ -1,6 +1,9 @@
 namespace RainforestApi;
 
-public class BackgroundTrackingService(ILogger<BackgroundTrackingService> logger, DatumService datumService, OrderService orderService) : BackgroundService
+public class BackgroundTrackingService(
+    ILogger<BackgroundTrackingService> logger,
+    DatumService datumService,
+    OrderService orderService) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
