@@ -38,6 +38,8 @@ services:
       DATUM_API: "http://datum:8080/api/clients"
       REDIS_HOST: redis
       HASHRATE_TARGET_DIFF: "1000"     # diff target per order (adjust)
+      DATUM_USER: "admin"
+      DATUM_PASS: "demo"
     depends_on:
       - datum
       - redis
