@@ -49,7 +49,7 @@ export const CheckoutPage = () => {
     zipCode: string,
     country: string
   ) => {
-    const newOrder = createOrder(
+    const promise = createOrder(
       product.productId,
       email,
       fullName,
@@ -59,7 +59,15 @@ export const CheckoutPage = () => {
       zipCode,
       country
     );
-    setOrder(newOrder);
+  
+    promise
+      .then((order) => {
+        setOrder(order);
+        setProgress(0);
+      })
+      .catch((error) => {
+        console.error("Error creating order:", error);
+      });
   };
   return (
     <div className="container mx-auto px-4 py-8">

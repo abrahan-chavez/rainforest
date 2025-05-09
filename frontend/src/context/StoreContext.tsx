@@ -34,7 +34,7 @@ interface StoreContextType {
     state: string,
     zip: string,
     country: string
-  ) => Order;
+  ) => any;
   updateOrderProgress: (id: string, progress: number) => void;
   createProduct: (product: Omit<Product, "id">) => Product;
   updateProduct: (id: string, product: Partial<Product>) => void;
