@@ -1,0 +1,11 @@
+{
+    "listen_address": "0.0.0.0",
+    "listen_port": 23334,
+    "rpc_url": "http://rainforrest:devpassword@bitcoin:18443",
+    "pooled_mining_only": false,
+    "pool_host": "", 
+    "coinbase_tag_primary": "RAINFORREST",
+    "coinbase_tag_secondary": "STORE",
+    "minimum_share_diff": 1,
+    "web_ui_listen": "0.0.0.0:8080"
+  }

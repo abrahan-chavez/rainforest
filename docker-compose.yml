@@ -1,0 +1,66 @@
+version: "3.9"
+
+services:
+  # ‑‑‑ Bitcoin full node (regtest) ‑‑‑
+  bitcoin:
+    build: ./bitcoin
+    volumes:
+      - btc_data:/home/bitcoin/.bitcoin
+    ports:
+      - "18443:18443"     # regtest RPC
+    restart: unless-stopped
+
+  # ‑‑‑ DATUM Gateway – public Stratum endpoint ‑‑‑
+  datum:
+    build: ./datum
+    environment:
+      BITCOIN_RPC_URL: "http://rainforrest:devpassword@bitcoin:18443"
+    ports:
+      - "23334:23334"     # Stratum V1 for miners
+      - "8080:8080"       # DATUM web/API UI
+    depends_on:
+      - bitcoin
+    restart: unless-stopped
+
+  # ‑‑‑ Redis for share tracking ‑‑‑
+  redis:
+    build: ./redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # ‑‑‑ Share‑tracker microservice ‑‑‑
+  tracker:
+    build: ./tracker
+    environment:
+      DATUM_API: "http://datum:8080/api/clients"
+      REDIS_HOST: redis
+      HASHRATE_TARGET_DIFF: "1000"     # diff target per order (adjust)
+    depends_on:
+      - datum
+      - redis
+    restart: unless-stopped
+
+  # ‑‑‑ FastAPI backend for front‑end polling ‑‑‑
+  api:
+    build: ./api
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  # ‑‑‑ Static front‑end (React/Next/Vite build) ‑‑‑
+  frontend:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+volumes:
+  btc_data:
