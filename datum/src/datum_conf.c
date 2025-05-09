@@ -49,7 +49,7 @@
 
 global_config_t datum_config;
 
-const char *datum_conf_var_type_text[] = { "boolean", "integer", "string", "string_array" };
+const char *datum_conf_var_type_text[] = { "boolean", "integer","double", "string", "string_array" };
 
 const T_DATUM_CONFIG_ITEM datum_config_options[] = {
 	// Bitcoind configs
@@ -82,8 +82,8 @@ const T_DATUM_CONFIG_ITEM datum_config_options[] = {
 		.required = false, .ptr = &datum_config.stratum_v1_max_threads,					.default_int = 8 },
 	{ .var_type = DATUM_CONF_INT, 		.category = "stratum", 		.name = "max_clients",				.description = "Maximum total Stratum clients before rejecting connections",
 		.required = false, .ptr = &datum_config.stratum_v1_max_clients, 				.default_int = 1024 },
-	{ .var_type = DATUM_CONF_INT, 		.category = "stratum", 		.name = "vardiff_min",				.description = "Work difficulty floor",
-		.required = false, .ptr = &datum_config.stratum_v1_vardiff_min, 				.default_int = 0 },
+	{ .var_type = DATUM_CONF_DOUBLE, 		.category = "stratum", 		.name = "vardiff_min",				.description = "Work difficulty floor",
+		.required = false, .ptr = &datum_config.stratum_v1_vardiff_min, 				.default_int = .1 },
 	{ .var_type = DATUM_CONF_INT, 		.category = "stratum", 		.name = "vardiff_target_shares_min",.description = "Adjust work difficulty to target this many shares per minute",
 		.required = false, .ptr = &datum_config.stratum_v1_vardiff_target_shares_min, 	.default_int = 8 },
 	{ .var_type = DATUM_CONF_INT, 		.category = "stratum", 		.name = "vardiff_quickdiff_count",	.description = "How many shares before considering a quick diff update",
@@ -258,6 +258,16 @@ int datum_config_parse_value(const T_DATUM_CONFIG_ITEM *c, json_t *item) {
 			*((bool *)c->ptr) = json_boolean_value(item)?true:false;
 			return 1;
 		}
+
+		case DATUM_CONF_DOUBLE: {
+			if (json_is_null(item)) {
+				*((double *)c->ptr) = 0.0;
+				return 1;
+			}
+			if (!json_is_real(item) && !json_is_integer(item)) return -1;
+			*((double *)c->ptr) = json_number_value(item);
+			return 1;
+		}
 		
 		case DATUM_CONF_STRING: {
 			if (json_is_null(item)) {
@@ -429,32 +439,15 @@ int datum_read_config(const char *conffile) {
 		DLOG_FATAL("Length of coinbase tags can not exceed 88 bytes total or 60 bytes each.");
 		return 0;
 	}
-	
-	if (datum_config.stratum_v1_vardiff_target_shares_min < 1) {
-		DLOG_FATAL("Stratum server stratum.vardiff_target_shares_min must be at least 1");
-		return 0;
-	}
-	
-	if (datum_config.stratum_v1_vardiff_quickdiff_count < 4) {
-		DLOG_FATAL("Stratum server stratum.vardiff_quickdiff_count must be at least 4");
-		return 0;
-	}
-	
+
+
 	if (datum_config.stratum_v1_vardiff_quickdiff_delta < 3) {
 		DLOG_FATAL("Stratum server stratum.vardiff_quickdiff_delta must be at least 3");
 		return 0;
 	}
 	
-	if (roundDownToPowerOfTwo_64(datum_config.stratum_v1_vardiff_min) != datum_config.stratum_v1_vardiff_min) {
-		const int nv = roundDownToPowerOfTwo_64(datum_config.stratum_v1_vardiff_min);
-		DLOG_WARN("stratum.vardiff_min MUST be a power of two. adjusting from %d to %d", datum_config.stratum_v1_vardiff_min, nv);
-		datum_config.stratum_v1_vardiff_min = nv;
-	}
-	
-	if (datum_config.stratum_v1_vardiff_min < 1) {
-		DLOG_FATAL("Stratum server stratum.vardiff_min must be at least 1 (suggest at least 1024, but more likely 32768)");
-		return 0;
-	}
+
+
 	
 	if (datum_config.stratum_v1_max_clients > (datum_config.stratum_v1_max_clients_per_thread*datum_config.stratum_v1_max_threads)) {
 		DLOG_FATAL("Stratum server configuration error. Max clients too high for thread settings");
