@@ -5,14 +5,14 @@ interface ProductCardProps {
   id: string;
   name: string;
   image: string;
-  hashesRequired: number;
+  priceInAcceptedShares: number;
   priceUSD: number;
 }
 export const ProductCard = ({
   id,
   name,
   image,
-  hashesRequired,
+  priceInAcceptedShares,
   priceUSD
 }: ProductCardProps) => {
   const formatHashes = (hashes: number) => {
@@ -36,7 +36,7 @@ export const ProductCard = ({
           <div className="flex items-center text-sm text-gray-600">
             <ZapIcon size={16} className="mr-2 text-blue-600 flex-shrink-0" />
             <span className="truncate font-medium">
-              {formatHashes(hashesRequired)} hashes
+              {formatHashes(priceInAcceptedShares)} shares
             </span>
           </div>
           <div className="flex items-center text-sm text-gray-500">
