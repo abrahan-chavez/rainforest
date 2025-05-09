@@ -44,3 +44,12 @@ Then:
 
 docker exec -it $(docker ps -qf name=bitcoin) \
   bitcoin-cli -regtest getnewaddress
+
+
+
+TODO: 
+
+1. Add ability to track miner data in stratum 
+2. Track hashrate data from datum 
+3. Connect API to GUI 
+4. Verify if the node is working correctly. 
