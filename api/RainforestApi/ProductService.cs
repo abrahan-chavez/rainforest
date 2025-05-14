@@ -57,7 +57,7 @@ public class ProductService
                 ProductId = "prod_2",
                 Name = "Crypto Mining Sticker Pack",
                 Description = "A set of 5 high-quality vinyl stickers with mining-themed designs.",
-                PriceInAcceptedShares = 100000,
+                PriceInAcceptedShares = 100,
                 Image =
                     "https://images.unsplash.com/photo-1572375992501-4b0892d50c69?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
             },
@@ -67,7 +67,7 @@ public class ProductService
                 Name = "Rainforest Coffee Mug",
                 Description =
                     "Ceramic mug perfect for those long mining sessions. Holds 12oz of your favorite beverage.",
-                PriceInAcceptedShares = 150000,
+                PriceInAcceptedShares = 1500,
                 Image =
                     "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
             },
@@ -97,7 +97,7 @@ public class ProductService
                 Name = "Blockchain Notebook",
                 Description =
                     "Premium hardcover notebook for jotting down your crypto ideas and mining strategies.",
-                PriceInAcceptedShares = 120000,
+                PriceInAcceptedShares = 12000,
                 Image =
                     "https://images.unsplash.com/photo-1531346878377-a5be20888e57?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
             }

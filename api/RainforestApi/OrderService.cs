@@ -55,17 +55,18 @@ public class OrderService(ProductService productService)
         }
 
         order.MinerResponse = datumResponse;
+        var totalShares = (datumResponse.AcceptedShares + datumResponse.RejectedShares);
 
-        if (datumResponse.AcceptedShares > 0 && datumResponse.AcceptedShares < order.QuotedAcceptedSharePrice)
+        if (totalShares > 0 && totalShares < order.QuotedAcceptedSharePrice)
         {
             order.Status = OrderStatus.Mining;
         }
-        else if (datumResponse.AcceptedShares >= order.QuotedAcceptedSharePrice)
+        else if (totalShares >= order.QuotedAcceptedSharePrice)
         {
             order.Status = OrderStatus.Completed;
         }
 
-        order.Progress = datumResponse.AcceptedShares / order.QuotedAcceptedSharePrice;
+        order.Progress = totalShares / order.QuotedAcceptedSharePrice;
 
         _orders.RemoveAll(o => o.WorkerName == datumResponse.Username);
         _orders.Add(order);
