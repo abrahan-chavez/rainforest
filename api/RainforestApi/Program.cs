@@ -25,7 +25,7 @@ builder.Services.AddSingleton<ProductService>();
 builder.Services.AddHttpClient<DatumService>()
     .ConfigureHttpClient(client =>
     {
-        client.BaseAddress = new Uri("http://localhost:8080");
+        client.BaseAddress = new Uri("http://datum:8080");
         var credentials = Convert.ToBase64String("admin:demo"u8.ToArray());
         client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);

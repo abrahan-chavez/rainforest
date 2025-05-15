@@ -7,7 +7,7 @@ public class DatumService(HttpClient httpClient)
     public async Task<DatumResponse[]> GetMiners(CancellationToken cancellation)
     {
         var response = await httpClient.GetFromJsonAsync<DatumResponse[]>(
-            "http://localhost:8080/api/clients.json",
+            "http://datum:8080/api/clients.json",
             cancellationToken: cancellation);
 
         if (response == null)
