@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { BaseService } from './base.service';
-import { Product } from '../models/product';
+import { CreateProductRequest, Product } from '../models/product';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +21,29 @@ export class ProductService extends BaseService {
     });
   }
 
-  getProducts() : Signal<Product[]> {
+  getProducts(): Signal<Product[]> {
     this.list();
     return this.products.asReadonly();
+  }
+
+  getProduct(productId: string) {
+    this.list();
+    return computed(() => {
+      const products = this.products();
+      return products.find((p) => p.productId === productId) ?? null;
+    });
+  }
+
+  createProduct(product: CreateProductRequest) {
+    this.httpClient
+      .post<Product>(`${this.baseUrl}/products`, product)
+      .subscribe({
+        next: (response) => {
+          this.products.update((products) => [...products, response]);
+        },
+        error: (error) => {
+          console.error('Error creating product:', error);
+        },
+      });
   }
 }

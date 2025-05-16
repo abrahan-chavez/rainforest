@@ -1,0 +1,145 @@
+<form (ngSubmit)="onSubmit()" class="space-y-4">
+  <div>
+    <label for="email" class="block text-sm font-medium mb-1"
+      >Email Address</label
+    >
+    <input
+      type="email"
+      id="email"
+      [(ngModel)]="emailAddress"
+      name="emailAddress"
+      required
+      class="input input-bordered w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+      [ngClass]="{
+        'border-error': invalid() && !emailAddress()
+      }"
+    />
+    @if(invalid() && !emailAddress()) {
+    <p class="text-error text-sm mt-1">Email address is required.</p>
+    }
+  </div>
+  <div>
+    <label for="name" class="block text-sm font-medium mb-1">Full Name</label>
+    <input
+      type="text"
+      id="name"
+      [(ngModel)]="fullName"
+      name="fullName"
+      required
+      class="input input-bordered w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+      [ngClass]="{
+        'border-error': invalid() && !fullName()
+      }"
+    />
+    @if(invalid() && !fullName()) {
+    <p class="text-error text-sm mt-1">Full name is required.</p>
+    }
+  </div>
+  <div>
+    <label for="address" class="block text-sm font-medium mb-1"
+      >Street Address</label
+    >
+    <input
+      type="text"
+      id="address"
+      [(ngModel)]="streetAddress"
+      name="streetAddress"
+      required
+      class="input input-bordered w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+      [ngClass]="{
+        'border-error': invalid() && !streetAddress()
+      }"
+    />
+    @if(invalid() && !streetAddress()) {
+    <p class="text-error text-sm mt-1">Street address is required.</p>
+    }
+  </div>
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label for="city" class="block text-sm font-medium mb-1">City</label>
+      <input
+        type="text"
+        id="city"
+        [(ngModel)]="city"
+        name="city"
+        required
+        class="input input-bordered w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+        [ngClass]="{
+          'border-error': invalid() && !city()
+        }"
+      />
+      @if(invalid() && !city()) {
+      <p class="text-error text-sm mt-1">City is required.</p>
+      }
+    </div>
+    <div>
+      <label for="state" class="block text-sm font-medium mb-1"
+        >State / Province</label
+      >
+      <input
+        type="text"
+        id="state"
+        [(ngModel)]="state"
+        name="state"
+        required
+        class="input input-bordered w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+        [ngClass]="{
+          'border-error': invalid() && !state()
+        }"
+      />
+      @if(invalid() && !state()) {
+      <p class="text-error text-sm mt-1">State / Province is required.</p>
+      }
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label for="zip" class="block text-sm font-medium mb-1"
+        >ZIP / Postal Code</label
+      >
+      <input
+        type="text"
+        id="zip"
+        [(ngModel)]="zipCode"
+        name="zipCode"
+        required
+        class="input input-bordered w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+        [ngClass]="{
+          'border-error': invalid() && !zipCode()
+        }"
+      />
+      @if(invalid() && !zipCode()) {
+      <p class="text-error text-sm mt-1">Zip / Postal is required.</p>
+      }
+    </div>
+    <div>
+      <label for="country" class="block text-sm font-medium mb-1"
+        >Country</label
+      >
+      <input
+        type="text"
+        id="country"
+        [(ngModel)]="country"
+        name="country"
+        required
+        class="input input-bordered w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2"
+        [ngClass]="{
+          'border-error': invalid() && !country()
+        }"
+      />
+      @if(invalid() && !country()) {
+      <p class="text-error text-sm mt-1">Country is required.</p>
+      }
+    </div>
+  </div>
+  <div class="pt-4">
+    <button
+      type="submit"
+      [disabled]="loading()"
+      class="btn btn-primary w-full py-3 px-4 font-medium rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2"
+      [ngClass]="{ 'opacity-70 cursor-not-allowed': loading() }"
+    >
+      {{ loading() ? "Processing..." : "Start Mining" }}
+    </button>
+  </div>
+</form>
