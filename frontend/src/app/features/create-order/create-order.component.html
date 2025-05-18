@@ -1,0 +1,110 @@
+<div class="container mx-auto px-4 py-8">
+  <a
+    [routerLink]="['/products', product()?.id]"
+    class="inline-flex items-center hover:text-primary transition-colors mb-6"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="mr-1"
+      width="16"
+      height="16"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M15 19l-7-7 7-7"
+      />
+    </svg>
+    Back to Product
+  </a>
+  <div class="bg-base-200 rounded-lg shadow-md overflow-hidden">
+    <div class="p-6 border-b border-gray-200">
+      @if (!order()) {
+      <h1 class="text-2xl font-bold">Checkout</h1>
+      } @else {
+      <h1 class="text-2xl font-bold">Order Created!</h1>
+      }
+    </div>
+    <div class="p-6">
+      <div class="flex flex-col md:flex-row">
+        <div class="md:w-1/2 md:pr-6">
+          <div class="mb-6 flex items-start">
+            <img
+              [src]="product()?.image"
+              [alt]="product()?.name"
+              class="w-20 h-20 object-cover rounded mr-4"
+            />
+            <div>
+              <h2 class="font-medium text-lg">{{ product()?.name }}</h2>
+              <p class="text-sm">
+                {{ product()?.priceInAcceptedShares | number }} shares required
+              </p>
+              <p class="text-sm">
+                (${{ product()?.priceUSD | number : "1.2-2" }} equivalent)
+              </p>
+            </div>
+          </div>
+          @if (!order()) {
+          <h3 class="font-medium mb-4">Order Information</h3>
+          <create-order-shipping-form
+            [productId]="productId()"
+            [shippingRequired]="false"
+            (order)="onSuccessfulOrder($event)"
+          ></create-order-shipping-form>
+          } @else {
+          <div class="bg-green-200 border border-green-300 rounded-lg p-4 mb-6">
+            <div class="flex items-start">
+              <svg
+                class="text-green-600 mr-2 mt-1"
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <div>
+                <h3 class="font-medium text-green-900">Order Created!</h3>
+                <p class="text-green-800 text-sm">
+                  Your order has been created. Follow the mining instructions to
+                  complete your purchase.
+                </p>
+                <p class="text-green-800 text-sm mt-2">
+                  Order ID:
+                  <span class="font-medium">{{ order()?.id }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        @if (order() != null) {
+        <div class="bg-base-100 rounded-lg p-5 md:p-6 shadow-sm">
+          <app-mining-instructions [order]="order()!"></app-mining-instructions>
+        </div>
+        } @else {
+        <div class="bg-base-200 border rounded-lg p-6">
+          <h3 class="font-medium mb-3">How Mining Works</h3>
+          <ol class="list-decimal list-inside space-y-3">
+            <li>Enter your shipping information</li>
+            <li>Receive a unique mining URL and worker name</li>
+            <li>Connect your mining software using the provided details</li>
+            <li>Mine until you reach 100% of the required hashes</li>
+            <li>Your order will be processed by the seller</li>
+          </ol>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

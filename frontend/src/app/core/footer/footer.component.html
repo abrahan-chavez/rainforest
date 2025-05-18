@@ -1,0 +1,91 @@
+<footer class="bg-base-200 text-base-content mt-16">
+  <div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <a routerLink="/" class="cursor-default inline-flex items-center">
+          <span class="material-symbols-rounded text-primary mr-2 align-middle"
+            >bolt</span
+          >
+          <span
+            class="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+          >
+            rainforest
+          </span>
+        </a>
+        <p class="text-sm mt-3 text-base-content/70 max-w-md">
+          The world's first marketplace where you can pay with your computer's
+          processing power instead of money. Mine for what you want, directly.
+        </p>
+      </div>
+      <div>
+        <h3 class="font-medium mb-4 text-lg text-base-content">Resources</h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="#" class="link link-hover flex items-center">
+              <span class="bg-base-300 w-1.5 h-1.5 rounded-full mr-2"></span>
+              Mining Guide
+            </a>
+          </li>
+          <li>
+            <a href="#" class="link link-hover flex items-center">
+              <span class="bg-base-300 w-1.5 h-1.5 rounded-full mr-2"></span>
+              Hashrate Calculator
+            </a>
+          </li>
+          <li>
+            <a href="#" class="link link-hover flex items-center">
+              <span class="bg-base-300 w-1.5 h-1.5 rounded-full mr-2"></span>
+              FAQ
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-medium mb-4 text-lg text-base-content">Links</h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a
+              routerLink="/order-status"
+              class="link link-hover flex items-center"
+            >
+              <span class="bg-base-300 w-1.5 h-1.5 rounded-full mr-2"></span>
+              Track Order
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin" class="link link-hover flex items-center">
+              <span class="bg-base-300 w-1.5 h-1.5 rounded-full mr-2"></span>
+              Admin Portal
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="divider mt-10"></div>
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <p class="text-sm text-base-content/60 mb-4 md:mb-0">
+        © {{ currentYear }} Rainforest. Built for demo purposes.
+      </p>
+      <div class="flex space-x-6">
+        <a
+          href="#"
+          class="link text-xs text-base-content/60 hover:text-base-content"
+        >
+          Privacy Policy
+        </a>
+        <a
+          href="#"
+          class="link text-xs text-base-content/60 hover:text-base-content"
+        >
+          Terms of Service
+        </a>
+        <a
+          href="#"
+          class="link text-xs text-base-content/60 hover:text-base-content"
+        >
+          Contact
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

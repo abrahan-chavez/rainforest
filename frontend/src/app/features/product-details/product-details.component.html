@@ -1,0 +1,83 @@
+@if (product()) {
+<div class="container mx-auto px-4 py-8">
+  <a
+    routerLink="/"
+    class="inline-flex items-center text-primary hover:text-primary-focus mb-6"
+  >
+    <span class="material-symbols-rounded mr-1 align-middle">arrow_back</span>
+    Back to Store
+  </a>
+  <div class="bg-base-100 rounded-lg shadow-md overflow-hidden">
+    <div class="md:flex">
+      <div class="md:w-1/2">
+        <div class="aspect-square overflow-hidden">
+          <img
+            [src]="product()?.image"
+            [alt]="product()?.name"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <div class="md:w-1/2 p-6 md:p-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-base-content mb-3">
+          {{ product()?.name }}
+        </h1>
+        <div class="flex flex-wrap items-center gap-3 mb-5">
+          <div
+            class="bg-primary/10 text-primary px-3 py-1.5 rounded-full flex items-center"
+          >
+            <span class="material-symbols-rounded mr-1.5 text-primary"
+              >bolt</span
+            >
+            <span class="font-medium">
+              {{ formatHashes(product()?.priceInAcceptedShares!) }} shares
+            </span>
+          </div>
+          <div class="flex items-center">
+            <span class="material-symbols-rounded mr-1.5">attach_money</span>
+            <span>{{ product()?.priceUSD?.toFixed(2) }} value</span>
+          </div>
+        </div>
+        <div class="border-t border-b border-base-200 py-5 my-6">
+          <p class="text-base-content/80 leading-relaxed">
+            {{ product()?.description }}
+          </p>
+        </div>
+        <div class="bg-base-200 p-5 rounded-lg mb-6 shadow-inner">
+          <h3 class="font-medium mb-3 flex items-center">
+            <span class="material-symbols-rounded mr-2 text-primary">bolt</span>
+            How Mining Works
+          </h3>
+          <p class="text-sm text-base-content/60 mb-4">
+            Instead of paying with money, you'll contribute computing power to
+            mine this item. After clicking "Mine to Purchase", you'll receive
+            instructions to connect your mining software.
+          </p>
+          <div class="grid grid-cols-2 gap-3 text-xs text-base-content/60">
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1.5 text-primary"
+                >shield</span
+              >
+              <span>Secure Mining</span>
+            </div>
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1.5 text-primary"
+                >local_shipping</span
+              >
+              <span>Fast Delivery</span>
+            </div>
+          </div>
+        </div>
+        <a
+          [routerLink]="['/order/create', product()?.id]"
+          class="button w-full py-3 px-4 bg-primary text-primary-content font-medium rounded-md hover:bg-primary-focus transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 flex items-center justify-center"
+        >
+          <span class="material-symbols-rounded mr-2">bolt</span>
+          Mine to Purchase
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+}

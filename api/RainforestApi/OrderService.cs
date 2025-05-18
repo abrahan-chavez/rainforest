@@ -1,32 +1,31 @@
+using Microsoft.EntityFrameworkCore;
 using RainforestApi.Models;
 
 namespace RainforestApi;
 
-public class OrderService(ProductService productService)
+public class OrderService(ProductService productService, RainforestContext dbContext)
 {
-    private readonly List<Order> _orders = [];
     private readonly string _stratumUrl = "stratum+tcp://localhost:8080";
     private readonly string _password = "x";
 
-    public Order[] GetOrders()
+    public async Task<Order[]> GetOrders(CancellationToken cancellationToken)
     {
-        return _orders.ToArray();
+        return await dbContext.Orders.Include(o => o.Product).ToArrayAsync(cancellationToken);
     }
 
-    public Order CreateOrder(OrderRequest orderRequest)
+    public async Task<Order> CreateOrder(OrderRequest orderRequest, CancellationToken cancellationToken)
     {
-        var product = productService.GetProduct(orderRequest.ProductId);
+        var product = await productService.GetProduct(orderRequest.ProductId, cancellationToken);
 
         if (product == null)
         {
             throw new ArgumentException($"Product with ID {orderRequest.ProductId} not found.");
         }
 
-        var orderId = Guid.NewGuid().ToString("N");
+        var workerName = Guid.NewGuid().ToString("N");
         var order = new Order
         {
-            ProductId = product.ProductId,
-            OrderId = $"order_{orderId}",
+            ProductId = product.Id,
             EmailAddress = orderRequest.EmailAddress,
             FullName = orderRequest.FullName,
             StreetAddress = orderRequest.StreetAddress,
@@ -36,44 +35,45 @@ public class OrderService(ProductService productService)
             Country = orderRequest.Country,
             Status = OrderStatus.Created,
             StratumUrl = _stratumUrl,
-            WorkerName = $"worker_{orderId}",
+            WorkerName = $"worker.{workerName}",
             Password = _password,
             QuotedAcceptedSharePrice = product.PriceInAcceptedShares,
         };
 
-        _orders.Add(order);
-
+        dbContext.Orders.Add(order);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return order;
     }
 
-    public void UpdateOrderProgress(DatumResponse datumResponse)
+    public async Task UpdateOrderProgress(DatumResponse datumResponse, CancellationToken cancellationToken)
     {
-        var order = _orders.SingleOrDefault(o => o.WorkerName == datumResponse.Username);
+        var order = await dbContext.Orders.SingleOrDefaultAsync(o => o.WorkerName == datumResponse.Username,
+            cancellationToken);
         if (order == null)
         {
             throw new ArgumentException($"Order with username {datumResponse.Username} not found.");
         }
 
         order.MinerResponse = datumResponse;
+        var totalShares = (datumResponse.AcceptedShares + datumResponse.RejectedShares);
 
-        if (datumResponse.AcceptedShares > 0 && datumResponse.AcceptedShares < order.QuotedAcceptedSharePrice)
+        if (totalShares > 0 && totalShares < order.QuotedAcceptedSharePrice)
         {
             order.Status = OrderStatus.Mining;
         }
-        else if (datumResponse.AcceptedShares >= order.QuotedAcceptedSharePrice)
+        else if (totalShares >= order.QuotedAcceptedSharePrice)
         {
             order.Status = OrderStatus.Completed;
         }
 
-        order.Progress = datumResponse.AcceptedShares / order.QuotedAcceptedSharePrice;
-
-        _orders.RemoveAll(o => o.WorkerName == datumResponse.Username);
-        _orders.Add(order);
+        order.Progress = totalShares / order.QuotedAcceptedSharePrice;
+        dbContext.Orders.Update(order);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Order GetOrder(string orderId)
+    public async Task<Order?> GetOrder(Guid orderId, CancellationToken cancellationToken)
     {
-        var order = _orders.Single(o => o.OrderId == orderId);
-        return order;
+        return await dbContext.Orders.Include(o => o.Product).Include(o => o.MinerResponse)
+            .SingleOrDefaultAsync(o => o.Id == orderId, cancellationToken);
     }
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace RainforestApi.Models;
@@ -10,6 +11,7 @@ public record DatumResponse
 
     [JsonPropertyName("host")] public string Host { get; init; } = null!;
 
+    [Key]
     [JsonPropertyName("username")] public string Username { get; init; } = null!;
 
     [JsonPropertyName("useragent")] public string UserAgent { get; init; } = null!;

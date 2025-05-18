@@ -1,0 +1,132 @@
+<div class="flex items-center mb-5">
+  <div class="cursor-default inline-flex items-center">
+    <span class="material-symbols-rounded text-primary mr-2 align-middle"
+      >bolt</span
+    >
+    <span class="text-xl font-bold text-primary"> Mining Instructions </span>
+  </div>
+</div>
+@if (order()!.progress >= 100) {
+<div class="text-center py-8 px-4 bg-green-50 rounded-lg">
+  <!-- CheckIcon SVG -->
+  <svg
+    class="mx-auto text-green-500 mb-3"
+    width="48"
+    height="48"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M9 24l8 8 22-22" />
+  </svg>
+  <p class="text-xl font-medium text-gray-800 mb-2">Mining Complete!</p>
+  <p class="text-gray-600 max-w-md mx-auto">
+    Your order is being processed for fulfillment and will ship soon.
+  </p>
+</div>
+} @else {
+<p class="text-primary mb-5">
+  Connect your mining software to our stratum server using the information
+  below:
+</p>
+<div class="space-y-5">
+  <div>
+    <label class="block text-sm font-medium text-primary mb-1.5"
+      >Stratum URL</label
+    >
+    <div class="flex">
+      <input
+        type="text"
+        [value]="order().stratumUrl"
+        readonly
+        class="flex-grow px-3 py-2.5 bg-base-200 rounded-l-md focus:outline-none font-mono text-sm"
+      />
+      <button
+        type="button"
+        (click)="copyToClipboard(order().stratumUrl, 'stratum')"
+        class="px-4 py-2.5 rounded-r-md bg-base-200 transition-colors flex items-center justify-center min-w-[60px]"
+        aria-label="Copy stratum URL"
+      >
+        <ng-container *ngIf="copiedStratum; else copyIcon1">
+          <span class="material-symbols-outlined text-green-600"> check </span>
+        </ng-container>
+        <ng-template #copyIcon1>
+          <span class="material-symbols-outlined"> content_copy </span>
+        </ng-template>
+      </button>
+    </div>
+  </div>
+  <div>
+    <label class="block text-sm font-medium text-primary mb-1.5"
+      >Worker Name</label
+    >
+    <div class="flex">
+      <input
+        type="text"
+        [value]="order().workerName"
+        readonly
+        class="flex-grow px-3 py-2.5 bg-base-200 rounded-l-md focus:outline-none font-mono text-sm"
+      />
+      <button
+        type="button"
+        (click)="copyToClipboard(order().workerName, 'worker')"
+        class="px-4 py-2.5 rounded-r-md bg-base-200 transition-colors flex items-center justify-center min-w-[60px]"
+        aria-label="Copy worker name"
+      >
+        <ng-container *ngIf="copiedWorker; else copyIcon2">
+          <span class="material-symbols-outlined text-green-600"> check </span>
+        </ng-container>
+        <ng-template #copyIcon2>
+          <span class="material-symbols-outlined"> content_copy </span>
+        </ng-template>
+      </button>
+    </div>
+  </div>
+  <div>
+    <label class="block text-sm font-medium text-primary mb-1.5"
+      >Sample Config (JSON)</label
+    >
+    <div
+      class="relative rounded-xl border border-base-300 bg-base-200 overflow-hidden"
+    >
+      <button
+        type="button"
+        (click)="copyToClipboard(config(), 'config')"
+        class="absolute top-2 right-0 btn-outline flex items-center justify-center min-w-[60px]"
+        aria-label="Copy config name"
+      >
+        <ng-container *ngIf="copiedConfig; else copyIcon3">
+          <span class="material-symbols-outlined text-green-600"> check </span>
+        </ng-container>
+        <ng-template #copyIcon3>
+          <span class="material-symbols-outlined text-gray-100">
+            content_copy
+          </span>
+        </ng-template>
+      </button>
+      <div class="prose max-w-none m-0">
+        <pre
+          class="overflow-x-auto p-4 m-0"
+        ><code #codeBlock class="language-js">{{ config() }}</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mt-6">
+  <div class="flex justify-between items-center mb-2">
+    <p class="text-sm font-medium text-primary">Mining Progress:</p>
+    <p class="text-sm font-medium text-primary">
+      {{ order().progress.toFixed(0) }}%
+    </p>
+  </div>
+  <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+    <div
+      class="bg-primary h-4 transition-all duration-500 ease-out"
+      [ngStyle]="{ width: order().progress + '%' }"
+    ></div>
+  </div>
+  <p class="text-xs text-primary mt-2">
+    Mining speed may vary based on your hardware.
+  </p>
+</div>
+}

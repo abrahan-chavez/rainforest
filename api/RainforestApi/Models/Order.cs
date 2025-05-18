@@ -1,9 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace RainforestApi.Models;
 
 public record Order
 {
-    public string ProductId { get; init; } = null!;
-    public string OrderId { get; init; } = null!;
+    [Key]
+    public Guid Id { get; init; }
+
+    public Guid ProductId { get; init; }
+    public Product Product { get; init; } = null!;
 
     public string EmailAddress { get; init; } = null!;
     public string FullName { get; init; } = null!;
@@ -14,6 +20,7 @@ public record Order
     public string ZipCode { get; init; } = null!;
     public string Country { get; init; } = null!;
 
+    [Column(TypeName = "text")]
     public OrderStatus Status { get; set; }
 
     public required string StratumUrl { get; init; }

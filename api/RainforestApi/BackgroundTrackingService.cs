@@ -2,11 +2,11 @@ namespace RainforestApi;
 
 public class BackgroundTrackingService(
     ILogger<BackgroundTrackingService> logger,
-    DatumService datumService,
-    OrderService orderService) : BackgroundService
+    DatumService datumService) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        return;
         while (!stoppingToken.IsCancellationRequested)
         {
             logger.LogInformation("Background tracking service is running at: {time}", DateTimeOffset.Now);
@@ -20,7 +20,6 @@ public class BackgroundTrackingService(
                 {
                     try
                     {
-                        orderService.UpdateOrderProgress(response);
                     }
                     catch (Exception e)
                     {
