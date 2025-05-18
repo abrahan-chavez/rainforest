@@ -5,6 +5,8 @@ export interface Product {
   image?: string;
   priceInAcceptedShares: number;
   priceUSD: number;
+  shippingRequired: boolean;
+  isActive: boolean;
 }
 
 export class CreateProductRequest {
@@ -12,4 +14,5 @@ export class CreateProductRequest {
   description?: string;
   image?: string;
   priceInAcceptedShares!: number;
+  shippingRequired!: boolean;
 }

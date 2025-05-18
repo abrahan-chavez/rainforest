@@ -10,10 +10,11 @@ public sealed class RainforestContext : DbContext
 
     private string DbPath { get; }
 
-    public RainforestContext()
+    public RainforestContext(DbContextOptions<RainforestContext> options)
+        : base(options)
     {
         var path = Environment.CurrentDirectory;
-        DbPath = System.IO.Path.Join(path, "rainforest.db");
+        DbPath = Path.Join(path, "rainforest.db");
         Database.Migrate();
     }
 

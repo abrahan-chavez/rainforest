@@ -1,11 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, model } from '@angular/core';
+import { ProductService } from '../../../services/product.service';
+import { CreateProductRequest } from '../../../models/product';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-create-product',
-  imports: [],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './create-product.component.html',
-  styleUrl: './create-product.component.css'
+  styleUrl: './create-product.component.css',
 })
 export class CreateProductComponent {
+  productName = model<string>('');
+  productPrice = model<number>(0);
+  productDescription = model<string>('');
+  productImageUrl = model<string>('');
+  shippingRequired = model<boolean>(false);
 
+  valid = computed(() => {
+    return (
+      this.productName() !== '' &&
+      this.productPrice() > 0 &&
+      this.productDescription() !== ''
+    );
+  });
+
+  private readonly productService = inject(ProductService);
+  private readonly router = inject(Router);
+
+  createProduct() {
+    const createProductRequest = {
+      name: this.productName(),
+      priceInAcceptedShares: this.productPrice(),
+      imageUrl: this.productImageUrl(),
+      description: this.productDescription(),
+      shippingRequired: this.shippingRequired(),
+    } as CreateProductRequest;
+
+    this.productService.createProduct(createProductRequest);
+    this.router.navigate(['/admin/products']);
+  }
 }

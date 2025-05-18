@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using RainforestApi;
 using RainforestApi.Models;
 
@@ -16,7 +17,10 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<RainforestContext>();
+builder.Services.AddDbContext<RainforestContext>(options =>
+{
+    options.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+});
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddHttpClient<DatumService>()
@@ -50,7 +54,7 @@ app.MapGet("/orders",
     .WithName("GetOrders")
     .WithOpenApi();
 
-app.MapPost("/orders/",
+app.MapPost("/orders",
         async (OrderRequest request, OrderService orderService, CancellationToken cancellationToken) =>
             await orderService.CreateOrder(request, cancellationToken))
     .WithName("CreateOrder")
@@ -65,13 +69,21 @@ app.MapGet("/orders/{orderId:guid}",
     .WithName("GetOrder")
     .WithOpenApi();
 
+app.MapPost("/orders/{orderId:guid}/ship", 
+        async (Guid orderId, OrderService orderService, CancellationToken cancellationToken) =>
+        {
+            await orderService.MarkOrderAsShipped(orderId, cancellationToken);
+        })
+    .WithName("MarkOrderShipped")
+    .WithOpenApi();
+
 app.MapGet("/products",
         async (ProductService productService, CancellationToken cancellationToken) =>
             await productService.GetProducts(cancellationToken))
     .WithName("GetProducts")
     .WithOpenApi();
 
-app.MapPost("/products/",
+app.MapPost("/products",
         async (ProductRequest request, ProductService productService, CancellationToken cancellationToken) =>
             await productService.CreateProduct(request, cancellationToken))
     .WithName("CreateProduct")
@@ -81,6 +93,18 @@ app.MapGet("/products/{productId:guid}",
         async (Guid productId, ProductService productService, CancellationToken cancellationToken) =>
             await productService.GetProduct(productId, cancellationToken))
     .WithName("GetProduct")
+    .WithOpenApi();
+
+app.MapPost("/products/{productId:guid}/deactivate",
+        async (Guid productId, ProductService productService, CancellationToken cancellationToken) =>
+            await productService.ChangeProductActivationStatus(productId, false, cancellationToken))
+    .WithName("DeactivateProduct")
+    .WithOpenApi();
+
+app.MapPost("/products/{productId:guid}/activate",
+        async (Guid productId, ProductService productService, CancellationToken cancellationToken) =>
+            await productService.ChangeProductActivationStatus(productId, true, cancellationToken))
+    .WithName("ActivateProduct")
     .WithOpenApi();
 
 app.Run();

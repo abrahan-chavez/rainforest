@@ -7,7 +7,8 @@ public class ProductService(RainforestContext context)
 {
     public async Task<Product[]> GetProducts(CancellationToken cancellationToken)
     {
-        return await context.Products.ToArrayAsync(cancellationToken);
+        return await context.Products
+            .ToArrayAsync(cancellationToken);
     }
 
     public async Task<Product> CreateProduct(ProductRequest productRequest, CancellationToken cancellationToken)
@@ -24,6 +25,14 @@ public class ProductService(RainforestContext context)
         context.Products.Add(product);
         await context.SaveChangesAsync(cancellationToken);
         return product;
+    }
+
+    public async Task ChangeProductActivationStatus(Guid productId, bool isActive, CancellationToken cancellationToken)
+    {
+        var product = await context.Products.SingleAsync(p => p.Id == productId, cancellationToken);
+        product.IsActive = isActive;
+        context.Products.Update(product);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<Product?> GetProduct(Guid productId, CancellationToken cancellationToken)

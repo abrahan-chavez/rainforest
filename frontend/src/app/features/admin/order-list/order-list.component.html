@@ -1,1 +1,65 @@
-<p>order-list works!</p>
+<div class="container mx-auto px-4 py-4">
+  <h1 class="text-2xl font-bold">Open Orders</h1>
+  <div class="flex flex-row items-center justify-between py-5">
+    <div class="form-control w-full max-w-xs">
+      <label class="input">
+        <span class="material-symbols-outlined"> search </span>
+        <input
+          [(ngModel)]="searchTerm"
+          type="search"
+          class="grow"
+          placeholder="Search"
+        />
+      </label>
+    </div>
+  </div>
+  <div
+    class="py-5 max-w-auto overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
+  >
+    <table class="table-xs table-zebra w-full">
+      <thead>
+        <tr>
+          <th></th>
+          <th align="left">Order ID</th>
+          <th align="left">Status</th>
+          <th align="left">Product</th>
+          <th align="left">Worker</th>
+          <th align="left">Progress</th>
+          <th align="left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of filteredOrders(); track $index) {
+        <tr>
+          <th>
+            {{ $index + 1 }}
+          </th>
+          <td class="font-mono">{{ order.id }}</td>
+          <td>
+            <div class="badge badge-soft" [ngClass]="fetchStyleForStatus(order.status)">{{ order.status }}</div>
+          </td>
+          <td>{{ order.product.name }} shares</td>
+          <td class="font-mono">{{ order.workerName }}</td>
+          <td>{{ order.progress | percent }}</td>
+          <td>
+            <div class="join">
+              <button
+                class="btn btn-sm btn-primary join-item"
+                routerLink="/order/track/{{ order.id }}"
+              >
+                Track
+              </button>
+              <button
+                class="btn btn-sm btn-success join-item"
+                (click)="markOrderShipped(order)"
+              >
+                Mark as Shipped
+              </button>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

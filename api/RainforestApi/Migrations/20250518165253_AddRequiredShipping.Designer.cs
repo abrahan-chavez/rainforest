@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RainforestApi;
 
@@ -10,9 +11,11 @@ using RainforestApi;
 namespace RainforestApi.Migrations
 {
     [DbContext(typeof(RainforestContext))]
-    partial class RainforestContextModelSnapshot : ModelSnapshot
+    [Migration("20250518165253_AddRequiredShipping")]
+    partial class AddRequiredShipping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -159,9 +162,6 @@ namespace RainforestApi.Migrations
 
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
