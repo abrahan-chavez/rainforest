@@ -38,6 +38,11 @@ export class CreateProductComponent {
       shippingRequired: this.shippingRequired(),
     } as CreateProductRequest;
 
+    if (!this.valid()) {
+      console.error('Invalid product data');
+      return;
+    }
+
     this.productService.createProduct(createProductRequest);
     this.router.navigate(['/admin/products']);
   }
