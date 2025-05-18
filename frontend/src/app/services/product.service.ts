@@ -26,6 +26,32 @@ export class ProductService extends BaseService {
     return this.products.asReadonly();
   }
 
+  deactivateProduct(productId: string) {
+    this.httpClient
+      .post<Product>(`${this.baseUrl}/products/${productId}/deactivate`, {})
+      .subscribe({
+        next: (response) => {
+          this.list();
+        },
+        error: (error) => {
+          console.error('Error deactivating product:', error);
+        },
+      });
+  }
+
+  activateProduct(productId: string) {
+    this.httpClient
+      .post<Product>(`${this.baseUrl}/products/${productId}/activate`, {})
+      .subscribe({
+        next: (response) => {
+          this.list();
+        },
+        error: (error) => {
+          console.error('Error activate product:', error);
+        },
+      });
+  }
+
   getProduct(productId: string) {
     this.list();
     return computed(() => {

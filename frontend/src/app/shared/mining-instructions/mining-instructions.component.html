@@ -116,13 +116,13 @@
   <div class="flex justify-between items-center mb-2">
     <p class="text-sm font-medium text-primary">Mining Progress:</p>
     <p class="text-sm font-medium text-primary">
-      {{ order().progress.toFixed(0) }}%
+      {{ (order().progress * 100).toFixed(0) }}%
     </p>
   </div>
-  <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+  <div class="w-full border rounded-full h-4 overflow-hidden">
     <div
       class="bg-primary h-4 transition-all duration-500 ease-out"
-      [ngStyle]="{ width: order().progress + '%' }"
+      [ngStyle]="{ width: (order().progress * 100) + '%' }"
     ></div>
   </div>
   <p class="text-xs text-primary mt-2">

@@ -1,6 +1,9 @@
+import { Product } from "./product";
+
 export interface Order {
   id: string;
   productId: string;
+  product: Product;
   emailAddress: string;
   status: OrderStatus;
   stratumUrl: string;

@@ -5,8 +5,7 @@ namespace RainforestApi.Models;
 
 public record Order
 {
-    [Key]
-    public Guid Id { get; init; }
+    [Key] public Guid Id { get; init; }
 
     public Guid ProductId { get; init; }
     public Product Product { get; init; } = null!;
@@ -20,8 +19,7 @@ public record Order
     public string ZipCode { get; init; } = null!;
     public string Country { get; init; } = null!;
 
-    [Column(TypeName = "text")]
-    public OrderStatus Status { get; set; }
+    [Column(TypeName = "text")] public OrderStatus Status { get; set; }
 
     public required string StratumUrl { get; init; }
     public required string WorkerName { get; init; }

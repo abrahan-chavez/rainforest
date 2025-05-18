@@ -34,4 +34,39 @@ export const routes: Routes = [
         (m) => m.OrderStatusComponent
       ),
   },
+  {
+    path: 'admin/sign-in',
+    loadComponent: () =>
+      import('./features/admin/sign-in/sign-in.component').then(
+        (m) => m.SignInComponent
+      ),
+  },
+  {
+    path: 'admin/dashboard',
+    loadComponent: () =>
+      import('./features/admin/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
+  },
+  {
+    path: 'admin/orders',
+    loadComponent: () =>
+      import('./features/admin/order-list/order-list.component').then(
+        (m) => m.OrderListComponent
+      ),
+  },
+  {
+    path: 'admin/products',
+    loadComponent: () =>
+      import('./features/admin/product-list/product-list.component').then(
+        (m) => m.ProductListComponent
+      ),
+  },
+  {
+    path: 'admin/products/create',
+    loadComponent: () =>
+      import('./features/admin/create-product/create-product.component').then(
+        (m) => m.CreateProductComponent
+      ),
+  },
 ];

@@ -5,7 +5,7 @@ import { Order } from '../../models/order';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
-import { MiningInstructionsComponent } from "../../shared/mining-instructions/mining-instructions.component";
+import { MiningInstructionsComponent } from '../../shared/mining-instructions/mining-instructions.component';
 
 @Component({
   selector: 'app-order-status',
@@ -15,33 +15,38 @@ import { MiningInstructionsComponent } from "../../shared/mining-instructions/mi
 })
 export class OrderStatusComponent {
   private readonly orderService = inject(OrderService);
-  private readonly productService = inject(ProductService);
   private readonly route = inject(ActivatedRoute);
 
   order = signal<Order | null>(null);
   error = signal<string | null>(null);
 
-  product: Signal<Product | null> = signal<Product | null>(null);
-
   constructor() {
     const orderId = this.route.snapshot.paramMap.get('orderId');
     if (orderId) {
-      this.orderService.getOrder(orderId).subscribe({
-        next: (order) => {
-          this.order.set(order);
-          this.error.set(null);
+      this.fetchOrder(orderId);
 
-          this.product = this.productService.getProduct(order.productId);
-        },
-        error: (error) => {
-          if (error.status === 404) {
-            this.error.set('Order not found');
-          } else {
-            this.error.set('An error occurred while fetching the order');
-            console.error('Error fetching order:', error);
-          }
-        },
-      });
+      setInterval(() => {
+        if (this.order()) {
+          this.fetchOrder(orderId);
+        }
+      }, 5000);
     }
+  }
+
+  fetchOrder(orderId: string) {
+    this.orderService.getOrder(orderId).subscribe({
+      next: (order) => {
+        this.order.set(order);
+        this.error.set(null);
+      },
+      error: (error) => {
+        if (error.status === 404) {
+          this.error.set('Order not found');
+        } else {
+          this.error.set('An error occurred while fetching the order');
+          console.error('Error fetching order:', error);
+        }
+      },
+    });
   }
 }

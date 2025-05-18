@@ -10,14 +10,16 @@ public class OrderService(ProductService productService, RainforestContext dbCon
 
     public async Task<Order[]> GetOrders(CancellationToken cancellationToken)
     {
-        return await dbContext.Orders.Include(o => o.Product).ToArrayAsync(cancellationToken);
+        return await dbContext.Orders
+            .Include(o => o.Product)
+            .ToArrayAsync(cancellationToken);
     }
 
     public async Task<Order> CreateOrder(OrderRequest orderRequest, CancellationToken cancellationToken)
     {
         var product = await productService.GetProduct(orderRequest.ProductId, cancellationToken);
 
-        if (product == null)
+        if (product == null || product.IsActive == false)
         {
             throw new ArgumentException($"Product with ID {orderRequest.ProductId} not found.");
         }
@@ -43,6 +45,19 @@ public class OrderService(ProductService productService, RainforestContext dbCon
         dbContext.Orders.Add(order);
         await dbContext.SaveChangesAsync(cancellationToken);
         return order;
+    }
+    
+    public async Task MarkOrderAsShipped(Guid orderId, CancellationToken cancellationToken)
+    {
+        var order = await dbContext.Orders.SingleOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+        if (order == null)
+        {
+            throw new ArgumentException($"Order with ID {orderId} not found.");
+        }
+
+        order.Status = OrderStatus.Shipped;
+        dbContext.Orders.Update(order);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UpdateOrderProgress(DatumResponse datumResponse, CancellationToken cancellationToken)

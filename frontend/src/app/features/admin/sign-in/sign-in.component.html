@@ -1,1 +1,43 @@
-<p>sign-in works!</p>
+<div class="min-h-[60vh] flex items-center justify-center bg-base-100">
+  <form class="card w-full max-w-sm shadow-lg bg-base-200 p-8 space-y-6">
+    <h2 class="card-title text-2xl font-bold mb-2 justify-center">
+      Admin Sign In
+    </h2>
+    <div class="form-control">
+      <label class="label" for="email">
+        <span class="label-text font-medium">Email</span>
+      </label>
+      <input
+        name="email"
+        id="email"
+        type="email"
+        class="input input-bordered w-full"
+        [(ngModel)]="email"
+        required
+        autocomplete="username"
+      />
+    </div>
+    <div class="form-control">
+      <label class="label" for="password">
+        <span class="label-text font-medium">Password</span>
+      </label>
+      <input
+        name="password"
+        id="password"
+        type="password"
+        class="input input-bordered w-full"
+        [(ngModel)]="password"
+        required
+        autocomplete="current-password"
+      />
+    </div>
+    <button
+      [disabled]="!valid()"
+      type="submit"
+      (click)="signin()"
+      class="btn btn-primary w-full mt-2"
+    >
+      Sign In
+    </button>
+  </form>
+</div>

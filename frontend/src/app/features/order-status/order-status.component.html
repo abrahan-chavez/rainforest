@@ -1,4 +1,4 @@
-@if (order() != null && product() != null) {
+@if (order() != null) {
 <div class="container mx-auto px-4 py-8">
   <a
     [routerLink]="['/order/track']"
@@ -31,17 +31,17 @@
         <div class="md:w-1/2 md:pr-6">
           <div class="mb-6 flex items-start">
             <img
-              [src]="product()?.image"
-              [alt]="product()?.name"
+              [src]="order()?.product?.image"
+              [alt]="order()?.product?.name"
               class="w-20 h-20 object-cover rounded mr-4"
             />
             <div>
-              <h2 class="font-medium text-lg">{{ product()?.name }}</h2>
+              <h2 class="font-medium text-lg">{{ order()?.product?.name }}</h2>
               <p class="text-sm">
-                {{ product()?.priceInAcceptedShares | number }} shares required
+                {{ order()?.product?.priceInAcceptedShares | number }} shares required
               </p>
               <p class="text-sm">
-                (${{ product()?.priceUSD | number : "1.2-2" }} equivalent)
+                (${{ order()?.product?.priceUSD | number : "1.2-2" }} equivalent)
               </p>
             </div>
           </div>

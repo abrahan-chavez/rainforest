@@ -1,11 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, model, Signal } from '@angular/core';
+import { Product } from '../../../models/product';
+import { ProductService } from '../../../services/product.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent {
+  private readonly productService = inject(ProductService);
+  products: Signal<Product[] | null>;
 
+  searchTerm = model<string>('');
+
+  filteredProducts = computed(() => {
+    const term = this.searchTerm();
+    if (!term) {
+      return this.products();
+    }
+    return this.products()?.filter((product) =>
+      product.name.toLowerCase().includes(term.toLowerCase())
+    );
+  });
+
+  deactivateProduct(product: Product) {
+    this.productService.deactivateProduct(product.id);
+  }
+
+  activateProduct(product: Product) {
+    this.productService.activateProduct(product.id);
+  }
+
+  constructor() {
+    this.products = this.productService.getProducts();
+  }
 }
