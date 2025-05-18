@@ -38,10 +38,12 @@
             <div>
               <h2 class="font-medium text-lg">{{ order()?.product?.name }}</h2>
               <p class="text-sm">
-                {{ order()?.product?.priceInAcceptedShares | number }} shares required
+                {{ order()?.product?.priceInAcceptedShares | number }} shares
+                required
               </p>
               <p class="text-sm">
-                (${{ order()?.product?.priceUSD | number : "1.2-2" }} equivalent)
+                (${{ order()?.product?.priceUSD | number : "1.2-2" }}
+                equivalent)
               </p>
             </div>
           </div>
@@ -74,7 +76,34 @@
                 }
                 <p class="text-green-800 text-sm mt-2">
                   Order ID:
-                  <span class="font-medium">{{ order()?.id }}</span>
+                  <span class="font-medium">{{ order()!.id }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-base-100 rounded-lg p-5 md:p-6 shadow-sm mt-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm text-base-content/80">
+                  <span class="font-medium">Status:</span>
+                  <span
+                    class="mx-2 badge badge-soft"
+                    [ngClass]="fetchStyleForStatus(order()!.status)"
+                  >
+                    {{ order()!.status }}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p class="text-sm text-base-content/80">
+                  <span class="font-medium">Name:</span>
+                  {{ order()?.fullName }}
+                </p>
+              </div>
+              <div>
+                <p class="text-sm text-base-content/80">
+                  <span class="font-medium">Email:</span>
+                  {{ order()?.emailAddress }}
                 </p>
               </div>
             </div>

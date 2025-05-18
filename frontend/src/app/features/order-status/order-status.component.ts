@@ -1,7 +1,7 @@
 import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Order } from '../../models/order';
+import { Order, OrderStatus } from '../../models/order';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
@@ -48,5 +48,20 @@ export class OrderStatusComponent {
         }
       },
     });
+  }
+
+  fetchStyleForStatus(status: OrderStatus): string {
+    switch (status) {
+      case OrderStatus.Created:
+        return 'badge-info';
+      case OrderStatus.Mining:
+        return 'badge-warning';
+      case OrderStatus.Completed:
+        return 'badge-success';
+      case OrderStatus.Shipped:
+        return 'badge-success';
+      default:
+        return '';
+    }
   }
 }

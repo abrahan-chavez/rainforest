@@ -12,7 +12,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 })
 export class MainComponent {
   private readonly productService = inject(ProductService);
-  products: Signal<Product[] | null>;
+  private products: Signal<Product[] | null>;
   searchTerm = model<string>('');
 
   filteredProducts = computed(() => {
