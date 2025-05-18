@@ -33,7 +33,7 @@ export class CreateProductComponent {
     const createProductRequest = {
       name: this.productName(),
       priceInAcceptedShares: this.productPrice(),
-      imageUrl: this.productImageUrl(),
+      image: this.productImageUrl(),
       description: this.productDescription(),
       shippingRequired: this.shippingRequired(),
     } as CreateProductRequest;
