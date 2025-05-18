@@ -17,20 +17,24 @@
       {{ product().name }}
     </h3>
     <div class="mt-auto space-y-3">
-      <div class="flex items-center text-sm text-gray-600">
-        <span class="material-symbols-outlined"> bolt </span>
-        <span class="truncate font-medium">
-          {{ formatHashes(product().priceInAcceptedShares) }} shares
+      <div
+        class="w-fit bg-primary/10 text-primary px-5 py-1.5 rounded-full flex items-center"
+      >
+        <span class="material-symbols-rounded mr-1.5 text-primary">bolt</span>
+        <span class="font-medium">
+          {{ formatHashes(product().priceInAcceptedShares!) }} shares
         </span>
       </div>
-      <div class="flex items-center text-sm text-gray-500">
-        <span class="material-symbols-outlined"> attach_money </span>
-        <span class="truncate"
-          >{{ product().priceUSD.toFixed(2) }} equivalent</span
-        >
+      <div
+        class="w-fit px-5 rounded-full flex items-center"
+      >
+        <span class="material-symbols-rounded mr-1.5">attach_money</span>
+        <span class="font-medium">
+          {{ product().priceUSD.toFixed(2) }} value
+        </span>
       </div>
       <a
-        [routerLink]="['order/create/', product().productId]"
+        [routerLink]="['products/', product().id]"
         class="btn btn-primary w-full mt-4 font-medium"
       >
         View Details

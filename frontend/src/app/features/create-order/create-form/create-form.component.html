@@ -19,7 +19,7 @@
     }
   </div>
   <div>
-    <label for="name" class="block text-sm font-medium mb-1">Full Name</label>
+    <label for="name" class="block text-sm font-medium mb-1">Name</label>
     <input
       type="text"
       id="name"
@@ -32,9 +32,10 @@
       }"
     />
     @if(invalid() && !fullName()) {
-    <p class="text-error text-sm mt-1">Full name is required.</p>
+    <p class="text-error text-sm mt-1">Name is required.</p>
     }
   </div>
+  @if(shippingRequired()) {
   <div>
     <label for="address" class="block text-sm font-medium mb-1"
       >Street Address</label
@@ -132,6 +133,12 @@
       }
     </div>
   </div>
+  }
+  @else {
+    <div class="text-sm text-base-content/60">
+      Seller does not require shipping information for this product. Please see product description for details.
+    </div>
+  }
   <div class="pt-4">
     <button
       type="submit"

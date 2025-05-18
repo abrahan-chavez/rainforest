@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class CreateFormComponent {
   productId = input.required<string | null>();
+  shippingRequired = input.required<boolean>();
   readonly order = output<Order>();
 
   private readonly orderService = inject(OrderService);
@@ -38,13 +39,20 @@ export class CreateFormComponent {
   invalid = computed(() => {
     return (
       this.submitted() &&
-      (!this.emailAddress() ||
-        !this.fullName() ||
-        !this.streetAddress() ||
-        !this.city() ||
-        !this.state() ||
-        !this.zipCode() ||
-        !this.country())
+      (!this.emailAddress() || !this.fullName() || !this.shippingValid())
+    );
+  });
+
+  shippingValid = computed(() => {
+    if (this.shippingRequired()) {
+      return true;
+    }
+    return (
+      !this.streetAddress() ||
+      !this.city() ||
+      !this.state() ||
+      !this.zipCode() ||
+      !this.country()
     );
   });
 

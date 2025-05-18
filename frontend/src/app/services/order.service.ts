@@ -9,8 +9,8 @@ import { CreateOrderRequest, Order } from '../models/order';
 export class OrderService extends BaseService {
   private httpClient = inject(HttpClient);
 
-  getOrder() {
-    return this.httpClient.get<Order>(`${this.baseUrl}/orders`);
+  getOrder(orderId: string) {
+    return this.httpClient.get<Order>(`${this.baseUrl}/orders/${orderId}`);
   }
 
   createOrder(order: CreateOrderRequest) {

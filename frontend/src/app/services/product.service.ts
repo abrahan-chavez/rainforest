@@ -30,7 +30,7 @@ export class ProductService extends BaseService {
     this.list();
     return computed(() => {
       const products = this.products();
-      return products.find((p) => p.productId === productId) ?? null;
+      return products.find((p) => p.id === productId) ?? null;
     });
   }
 

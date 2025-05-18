@@ -12,7 +12,7 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 })
 export class MainComponent {
   private readonly productService = inject(ProductService);
-  products: Signal<Product[]>;
+  products: Signal<Product[] | null>;
 
   constructor() {
     this.products = this.productService.getProducts();

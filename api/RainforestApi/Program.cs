@@ -4,24 +4,21 @@ using RainforestApi;
 using RainforestApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+    options.AddDefaultPolicy(policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<OrderService>();
-builder.Services.AddSingleton<ProductService>();
+builder.Services.AddDbContext<RainforestContext>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddHttpClient<DatumService>()
     .ConfigureHttpClient(client =>
     {
@@ -31,8 +28,8 @@ builder.Services.AddHttpClient<DatumService>()
             new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
     });
 builder.Services.AddHostedService<BackgroundTrackingService>();
-
 builder.Services.AddProblemDetails();
+builder.Services.AddLogging();
 
 builder.Services.Configure<JsonOptions>(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
@@ -47,55 +44,42 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseHttpsRedirection();
 
-app.MapGet("/orders", () =>
-    {
-        var orderService = app.Services.GetRequiredService<OrderService>();
-        return orderService.GetOrders();
-    })
+app.MapGet("/orders",
+        async (OrderService orderService, CancellationToken cancellationToken) =>
+            await orderService.GetOrders(cancellationToken))
     .WithName("GetOrders")
     .WithOpenApi();
 
-app.MapPost("/orders/", (OrderRequest request) =>
-    {
-        var orderService = app.Services.GetRequiredService<OrderService>();
-        var order = orderService.CreateOrder(request);
-        return order;
-    })
+app.MapPost("/orders/",
+        async (OrderRequest request, OrderService orderService, CancellationToken cancellationToken) =>
+            await orderService.CreateOrder(request, cancellationToken))
     .WithName("CreateOrder")
     .WithOpenApi();
 
-app.MapGet("/orders/{orderId}", (string orderId) =>
-    {
-        var orderService = app.Services.GetRequiredService<OrderService>();
-        var order = orderService.GetOrder(orderId);
-        return order;
-    })
+app.MapGet("/orders/{orderId:guid}",
+        async (Guid orderId, OrderService orderService, CancellationToken cancellationToken) =>
+        {
+            var order = await orderService.GetOrder(orderId, cancellationToken);
+            return order == null ? Results.NotFound() : Results.Ok(order);
+        })
     .WithName("GetOrder")
     .WithOpenApi();
 
-app.MapGet("/products", () =>
-    {
-        var productService = app.Services.GetRequiredService<ProductService>();
-        return productService.GetProducts();
-    })
+app.MapGet("/products",
+        async (ProductService productService, CancellationToken cancellationToken) =>
+            await productService.GetProducts(cancellationToken))
     .WithName("GetProducts")
     .WithOpenApi();
 
-app.MapPost("/products/", (ProductRequest request) =>
-    {
-        var productService = app.Services.GetRequiredService<ProductService>();
-        var product = productService.CreateProduct(request);
-        return product;
-    })
+app.MapPost("/products/",
+        async (ProductRequest request, ProductService productService, CancellationToken cancellationToken) =>
+            await productService.CreateProduct(request, cancellationToken))
     .WithName("CreateProduct")
     .WithOpenApi();
 
-app.MapGet("/products/{productId}", (string productId) =>
-    {
-        var productService = app.Services.GetRequiredService<ProductService>();
-        var product = productService.GetProduct(productId);
-        return product;
-    })
+app.MapGet("/products/{productId:guid}",
+        async (Guid productId, ProductService productService, CancellationToken cancellationToken) =>
+            await productService.GetProduct(productId, cancellationToken))
     .WithName("GetProduct")
     .WithOpenApi();
 

@@ -2,7 +2,7 @@ namespace RainforestApi.Models;
 
 public class OrderRequest
 {
-    public string ProductId { get; init; } = null!;
+    public Guid ProductId { get; init; }
 
     public string EmailAddress { get; init; } = null!;
     public string FullName { get; init; } = null!;
