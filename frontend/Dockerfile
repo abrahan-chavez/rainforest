@@ -10,7 +10,8 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY . .
-
+run npm i @fontsource/material-symbols-rounded --save
+RUN apt-get update && apt-get install -y ca-certificates
 RUN npm run build -- --configuration production
 
 # Stage 2: Serve Angular app with Nginx
