@@ -33,10 +33,15 @@ export class CreateProductComponent {
     const createProductRequest = {
       name: this.productName(),
       priceInAcceptedShares: this.productPrice(),
-      imageUrl: this.productImageUrl(),
+      image: this.productImageUrl(),
       description: this.productDescription(),
       shippingRequired: this.shippingRequired(),
     } as CreateProductRequest;
+
+    if (!this.valid()) {
+      console.error('Invalid product data');
+      return;
+    }
 
     this.productService.createProduct(createProductRequest);
     this.router.navigate(['/admin/products']);

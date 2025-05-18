@@ -52,7 +52,7 @@
           <h3 class="font-medium mb-4">Order Information</h3>
           <create-order-shipping-form
             [productId]="productId()"
-            [shippingRequired]="false"
+            [shippingRequired]="product()!.shippingRequired"
             (order)="onSuccessfulOrder($event)"
           ></create-order-shipping-form>
           } @else {

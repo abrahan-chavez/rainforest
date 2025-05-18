@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using RainforestApi;
 using RainforestApi.Models;
@@ -106,5 +107,18 @@ app.MapPost("/products/{productId:guid}/activate",
             await productService.ChangeProductActivationStatus(productId, true, cancellationToken))
     .WithName("ActivateProduct")
     .WithOpenApi();
+
+app.MapPost("/admin/clear",
+    async (RainforestContext dbContext, CancellationToken cancellationToken) =>
+    {
+        await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+        var orders = await dbContext.Orders.ToArrayAsync(cancellationToken);
+        dbContext.Orders.RemoveRange(orders);
+        var products = await dbContext.Products.ToArrayAsync(cancellationToken);
+        dbContext.Products.RemoveRange(products);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        transaction.Commit();
+        return Results.NoContent();
+    });
 
 app.Run();
