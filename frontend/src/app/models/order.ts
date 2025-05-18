@@ -4,6 +4,7 @@ export interface Order {
   id: string;
   productId: string;
   product: Product;
+  fullName: string;
   emailAddress: string;
   status: OrderStatus;
   stratumUrl: string;
