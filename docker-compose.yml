@@ -25,7 +25,6 @@ services:
       - BITCOIN_RPC_USER=rainforrest
       - BITCOIN_RPC_PASS=devpassword
       - BITCOIN_RPC_URL=http://rainforrest:devpassword@bitcoin:18443
-      - ASPNETCORE_URLS=http://0.0.0.0:8080
     ports:
       - "23334:23334"     # Stratum V1 for miners
       - "8080:8080"       # DATUM web/API UI

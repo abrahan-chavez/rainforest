@@ -7,13 +7,13 @@
   },
   "stratum": {
     "listen_port": 23334,
-    "vardiff_min": 0.1,
-    "vardiff_target_shares_min": 0,
+    "vardiff_min": 8,
+    "vardiff_target_shares_min": 1,
     "vardiff_quickdiff_delta": 1000000
 
   },
   "mining": {
-    "pool_address": "bcrt1qnz56s8r22wzx9pldtv5a9d86zvfpf3ju5tmlxr",
+    "pool_address": "bcrt1qx6kv70uw3wx7ycld259kn9lhgyd9zjj7y2erfa",
     "coinbase_tag_primary": "RAINFORREST",
     "coinbase_tag_secondary": "STORE"
   },
