@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular app
-        run: npx ng build --output-path dist
+        run: npx ng build --output-path dist --base-href "/${{ github.event.repository.name }}/"
 
       - name: Copy index.html to 404.html (SPA support)
         run: cp dist/browser/index.html dist/browser/404.html

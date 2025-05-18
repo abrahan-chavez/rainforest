@@ -5,7 +5,7 @@ namespace RainforestApi;
 
 public class OrderService(ProductService productService, RainforestContext dbContext)
 {
-    private readonly string _stratumUrl = "stratum+tcp://localhost:8080";
+    private readonly string _stratumUrl = "stratum+tcp://44.210.122.181:8080";
     private readonly string _password = "x";
 
     public async Task<Order[]> GetOrders(CancellationToken cancellationToken)
