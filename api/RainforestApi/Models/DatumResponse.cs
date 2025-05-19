@@ -5,29 +5,31 @@ namespace RainforestApi.Models;
 
 public record DatumResponse
 {
-    [JsonPropertyName("thread")] public int Thread { get; init; }
+    public Guid OrderId { get; init; }
+    public Order? Order { get; init; }
 
-    [JsonPropertyName("cid")] public int Cid { get; init; }
+    [JsonPropertyName("thread")] public int Thread { get; set; }
 
-    [JsonPropertyName("host")] public string Host { get; init; } = null!;
+    [JsonPropertyName("cid")] public int Cid { get; set; }
 
-    [Key] [JsonPropertyName("username")] public string Username { get; init; } = null!;
+    [JsonPropertyName("host")] public string Host { get; set; } = null!;
+    [JsonPropertyName("username")] public string Username { get; set; } = null!;
 
-    [JsonPropertyName("useragent")] public string UserAgent { get; init; } = null!;
+    [JsonPropertyName("useragent")] public string UserAgent { get; set; } = null!;
 
-    [JsonPropertyName("subscribed")] public bool Subscribed { get; init; }
+    [JsonPropertyName("subscribed")] public bool Subscribed { get; set; }
 
-    [JsonPropertyName("subscribe_secs")] public double SubscribeSecs { get; init; }
+    [JsonPropertyName("subscribe_secs")] public double SubscribeSecs { get; set; }
 
-    [JsonPropertyName("diff")] public int Difficulty { get; init; }
+    [JsonPropertyName("diff")] public int Difficulty { get; set; }
 
-    [JsonPropertyName("accepted_diff")] public int AcceptedDiff { get; init; }
+    [JsonPropertyName("accepted_diff")] public int AcceptedDiff { get; set; }
 
-    [JsonPropertyName("rejected_diff")] public int RejectedDiff { get; init; }
+    [JsonPropertyName("rejected_diff")] public int RejectedDiff { get; set; }
 
-    [JsonPropertyName("accepted_shares")] public int AcceptedShares { get; init; }
+    [JsonPropertyName("accepted_shares")] public int AcceptedShares { get; set; }
 
-    [JsonPropertyName("rejected_shares")] public int RejectedShares { get; init; }
+    [JsonPropertyName("rejected_shares")] public int RejectedShares { get; set; }
 
-    [JsonPropertyName("hashrate_ths")] public double HashrateTerahashesPerSecond { get; init; }
+    [JsonPropertyName("hashrate_ths")] public double HashrateTerahashesPerSecond { get; set; }
 }

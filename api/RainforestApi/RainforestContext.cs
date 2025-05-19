@@ -22,4 +22,10 @@ public sealed class RainforestContext : DbContext
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite($"Data Source={DbPath}");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Order>().OwnsOne(o => o.MinerResponse, opt =>
+            opt.ToTable("DatumResponse"));
+    }
 }

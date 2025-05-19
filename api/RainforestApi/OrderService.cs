@@ -64,8 +64,7 @@ public class OrderService(ProductService productService, RainforestContext dbCon
     {
         var order = await dbContext.Orders
             .Include(o => o.MinerResponse)
-            .SingleOrDefaultAsync(o => o.WorkerName == datumResponse.Username,
-            cancellationToken);
+            .SingleOrDefaultAsync(o => o.WorkerName == datumResponse.Username, cancellationToken);
         if (order == null)
         {
             throw new ArgumentException($"Order with username {datumResponse.Username} not found.");
