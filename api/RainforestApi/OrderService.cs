@@ -62,7 +62,9 @@ public class OrderService(ProductService productService, RainforestContext dbCon
 
     public async Task UpdateOrderProgress(DatumResponse datumResponse, CancellationToken cancellationToken)
     {
-        var order = await dbContext.Orders.SingleOrDefaultAsync(o => o.WorkerName == datumResponse.Username,
+        var order = await dbContext.Orders
+            .Include(o => o.MinerResponse)
+            .SingleOrDefaultAsync(o => o.WorkerName == datumResponse.Username,
             cancellationToken);
         if (order == null)
         {
@@ -70,7 +72,7 @@ public class OrderService(ProductService productService, RainforestContext dbCon
         }
 
         order.MinerResponse = datumResponse;
-        var totalShares = (datumResponse.AcceptedShares + datumResponse.RejectedShares);
+        var totalShares = datumResponse.AcceptedShares;
 
         if (totalShares > 0 && totalShares < order.QuotedAcceptedSharePrice)
         {
