@@ -1,2 +1,7 @@
 #!/bin/bash
-exec minerd -a sha256d -o "$STRATUM_URL" -u "$WORKER_NAME" -p x
+exec cpuminer \
+  --algo sha256d \
+  --url "$STRATUM_URL" \
+  --user "$WORKER_NAME" \
+  --threads "4" \
+  --pass x
