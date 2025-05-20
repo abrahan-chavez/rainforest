@@ -69,4 +69,11 @@ export const routes: Routes = [
         (m) => m.CreateProductComponent
       ),
   },
+  {
+    path: 'admin/products/edit/:productId',
+    loadComponent: () =>
+      import('./features/admin/update-product/update-product.component').then(
+        (m) => m.UpdateProductComponent
+      ),
+  },
 ];

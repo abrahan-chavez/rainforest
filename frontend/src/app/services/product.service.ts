@@ -72,4 +72,17 @@ export class ProductService extends BaseService {
         },
       });
   }
+
+  updateProduct(productId: string, product: CreateProductRequest) {
+    this.httpClient
+      .put<Product>(`${this.baseUrl}/products/${productId}`, product)
+      .subscribe({
+        next: (response) => {
+          this.list();
+        },
+        error: (error) => {
+          console.error('Error creating product:', error);
+        },
+      });
+  }
 }

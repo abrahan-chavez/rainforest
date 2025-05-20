@@ -99,6 +99,12 @@ app.MapGet("/products/{productId:guid}",
     .WithName("GetProduct")
     .WithOpenApi();
 
+app.MapPut("/products/{productId:guid}",
+        async (Guid productId, ProductRequest request, ProductService productService, CancellationToken cancellationToken) =>
+            await productService.UpdateProduct(productId, request, cancellationToken))
+    .WithName("UpdateProduct")
+    .WithOpenApi();
+
 app.MapPut("/products/seed",
     async (ProductService productService, CancellationToken cancellationToken) =>
     {

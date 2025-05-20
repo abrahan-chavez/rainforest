@@ -41,6 +41,21 @@ public class ProductService(RainforestContext context)
     {
         return await context.Products.SingleOrDefaultAsync(p => p.Id == productId, cancellationToken);
     }
+
+    public async Task<Product> UpdateProduct(Guid productId, ProductRequest productRequest, CancellationToken cancellationToken)
+    {
+        var product = await context.Products.SingleAsync(p => p.Id == productId, cancellationToken);
+        product.Name = productRequest.Name;
+        product.Description = productRequest.Description;
+        product.Image = productRequest.Image;
+        product.ShippingRequired = productRequest.ShippingRequired;
+        product.PriceUSD = productRequest.PriceUsd;
+        product.StockQuantity = productRequest.StockQuantity;
+
+        context.Products.Update(product);
+        await context.SaveChangesAsync(cancellationToken);
+        return product;
+    }
     
     public async Task SeedProducts(CancellationToken cancellationToken)
     {

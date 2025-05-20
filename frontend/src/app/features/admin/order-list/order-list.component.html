@@ -36,7 +36,12 @@
           </th>
           <td class="font-mono">{{ order.id }}</td>
           <td>
-            <div class="badge badge-soft" [ngClass]="fetchStyleForStatus(order.status)">{{ order.status }}</div>
+            <div
+              class="badge badge-soft"
+              [ngClass]="fetchStyleForStatus(order.status)"
+            >
+              {{ order.status }}
+            </div>
           </td>
           <td>{{ order.product.name }} shares</td>
           <td class="font-mono">{{ order.workerName }}</td>
@@ -49,12 +54,14 @@
               >
                 Track
               </button>
+              @if (order.status !== 'Shipped') {
               <button
                 class="btn btn-sm btn-success join-item"
                 (click)="markOrderShipped(order)"
               >
                 Mark as Shipped
               </button>
+              }
             </div>
           </td>
         </tr>
