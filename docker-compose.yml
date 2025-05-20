@@ -64,14 +64,14 @@ services:
       - "80:80"
     restart: unless-stopped
     
-  cpuminer:
-    build: ./cpuminer
-    depends_on:
-      - datum
-    restart: unless-stopped
-    environment:
-      STRATUM_URL: stratum+tcp://datum:23334
-      WORKER_NAME: worker_d044f7d362ff4e099100df02031f2a78
+  #cpuminer:
+  #  build: ./cpuminer
+  #  depends_on:
+  #    - datum
+  #  restart: unless-stopped
+  #  environment:
+  #    STRATUM_URL: stratum+tcp://datum:23334
+  #    WORKER_NAME: worker_d044f7d362ff4e099100df02031f2a78
 
 volumes:
   btc_data:
