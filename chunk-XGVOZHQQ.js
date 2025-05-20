@@ -1,0 +1,1 @@
+import{i as e,ya as o}from"./chunk-V3PXLIOM.js";var r={production:!0,apiBaseUri:"https://c7n5ejmyg7.execute-api.us-east-1.amazonaws.com/prod"};var n=class t{baseUrl=r.apiBaseUri;httpOptions={headers:new o({"Content-Type":"application/json"})};static \u0275fac=function(a){return new(a||t)};static \u0275prov=e({token:t,factory:t.\u0275fac,providedIn:"root"})};export{n as a};
