@@ -6,6 +6,8 @@ namespace RainforestApi.Models;
 public record DatumResponse
 {
     public Guid OrderId { get; init; }
+    
+    [JsonIgnore]
     public Order? Order { get; init; }
 
     [JsonPropertyName("thread")] public int Thread { get; set; }

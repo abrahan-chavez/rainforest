@@ -31,14 +31,6 @@ services:
     depends_on:
       - bitcoin
     restart: unless-stopped
-
-  # ‑‑‑ Redis for share tracking ‑‑‑
-  redis:
-    build: ./redis
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
-
   # ‑‑‑ FastAPI backend for front‑end polling ‑‑‑
   api:
     build: ./api
