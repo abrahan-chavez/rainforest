@@ -1,1 +1,0 @@
-import{i as e,xa as o}from"./chunk-WKEVHOL6.js";var r={production:!0,apiBaseUri:"http://44.210.122.181:5030"};var n=class t{baseUrl=r.apiBaseUri;httpOptions={headers:new o({"Content-Type":"application/json"})};static \u0275fac=function(i){return new(i||t)};static \u0275prov=e({token:t,factory:t.\u0275fac,providedIn:"root"})};export{n as a};
