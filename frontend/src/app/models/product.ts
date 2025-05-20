@@ -6,6 +6,7 @@ export interface Product {
   priceUSD: number;
   shippingRequired: boolean;
   isActive: boolean;
+  stockQuantity: number;
 }
 
 export class CreateProductRequest {
