@@ -1,3 +1,4 @@
+using System.Text.Json;
 using RainforestApi.Models;
 
 namespace RainforestApi;
@@ -14,6 +15,8 @@ public class DatumService(HttpClient httpClient)
         {
             throw new ApplicationException("Failed to fetch miners data.");
         }
+
+        Console.WriteLine($"Workers: {JsonSerializer.Serialize(response)}");
 
         return response;
     }
