@@ -51,6 +51,8 @@ services:
       - redis
     ports:
       - "5030:5030"
+    volumes:
+    - ./rainforest.db:/data/rainforest.db
     restart: unless-stopped
 
   # ‑‑‑ Static front‑end (React/Next/Vite build) ‑‑‑
