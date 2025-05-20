@@ -28,7 +28,18 @@
         required
       />
     </div>
-
+        <div>
+      <label class="label">
+        <span class="label-text">Stock Quantity</span>
+      </label>
+      <input
+        type="number"
+        [(ngModel)]="stockQuantity"
+        name="stockQuantity" step="1"
+        class="input input-bordered w-full"
+        required
+      />
+    </div>
     <div>
       <label class="label">
         <span class="label-text">Product Description</span>

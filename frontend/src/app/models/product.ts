@@ -14,5 +14,6 @@ export class CreateProductRequest {
   description?: string;
   image?: string;
   priceInAcceptedShares!: number;
+  stockQuantity!: number;
   shippingRequired!: boolean;
 }

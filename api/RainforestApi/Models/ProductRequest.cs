@@ -8,4 +8,5 @@ public record ProductRequest
     public bool ShippingRequired { get; init; }
 
     public decimal PriceInAcceptedShares { get; init; }
+    public int StockQuantity { get; set; }
 }

@@ -19,7 +19,8 @@ public class ProductService(RainforestContext context)
             Description = productRequest.Description,
             Image = productRequest.Image,
             ShippingRequired = productRequest.ShippingRequired,
-            PriceInAcceptedShares = productRequest.PriceInAcceptedShares
+            PriceInAcceptedShares = productRequest.PriceInAcceptedShares,
+            StockQuantity = productRequest.StockQuantity,
         };
 
         context.Products.Add(product);

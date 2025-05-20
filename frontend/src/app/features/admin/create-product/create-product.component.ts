@@ -17,11 +17,13 @@ export class CreateProductComponent {
   productDescription = model<string>('');
   productImageUrl = model<string>('');
   shippingRequired = model<boolean>(false);
+  stockQuantity = model<number>(0);
 
   valid = computed(() => {
     return (
       this.productName() !== '' &&
       this.productPrice() > 0 &&
+      this.stockQuantity() > 0 &&
       this.productDescription() !== ''
     );
   });
@@ -33,6 +35,7 @@ export class CreateProductComponent {
     const createProductRequest = {
       name: this.productName(),
       priceInAcceptedShares: this.productPrice(),
+      stockQuantity: this.stockQuantity(),
       image: this.productImageUrl(),
       description: this.productDescription(),
       shippingRequired: this.shippingRequired(),

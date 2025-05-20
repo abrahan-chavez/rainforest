@@ -24,6 +24,13 @@ public class OrderService(ProductService productService, RainforestContext dbCon
             throw new ArgumentException($"Product with ID {orderRequest.ProductId} not found.");
         }
 
+        if (product.StockQuantity == 0)
+        {
+            throw new ArgumentException($"Product with ID {orderRequest.ProductId} is out of stock.");
+        }
+        
+        product.StockQuantity--;
+        
         var workerName = Guid.NewGuid().ToString("N");
         var order = new Order
         {

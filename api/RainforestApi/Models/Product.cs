@@ -16,4 +16,6 @@ public record Product
     public decimal PriceUSD => PriceInAcceptedShares / 10_000;
 
     public bool IsActive { get; set; } = true;
+    
+    public int StockQuantity { get; set; }
 }
