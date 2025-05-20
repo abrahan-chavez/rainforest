@@ -3,7 +3,10 @@ using RainforestApi.Models;
 
 namespace RainforestApi;
 
-public class OrderService(ProductService productService, RainforestContext dbContext, HashRateConversionService hashRateConversionService)
+public class OrderService(
+    ProductService productService,
+    RainforestContext dbContext,
+    HashRateConversionService hashRateConversionService)
 {
     private readonly string _stratumUrl = "stratum+tcp://44.210.122.181:23334";
     private readonly string _password = "x";
@@ -28,12 +31,12 @@ public class OrderService(ProductService productService, RainforestContext dbCon
         {
             throw new ArgumentException($"Product with ID {orderRequest.ProductId} is out of stock.");
         }
-        
+
         product.StockQuantity--;
-        
+
         var usdPerHash = await hashRateConversionService.GetUsdPerHash(cancellationToken);
         var hashPrice = product.PriceUSD / usdPerHash;
-        
+
         var workerName = Guid.NewGuid().ToString("N");
         var order = new Order
         {
@@ -56,7 +59,7 @@ public class OrderService(ProductService productService, RainforestContext dbCon
         await dbContext.SaveChangesAsync(cancellationToken);
         return order;
     }
-    
+
     public async Task MarkOrderAsShipped(Guid orderId, CancellationToken cancellationToken)
     {
         var order = await dbContext.Orders.SingleOrDefaultAsync(o => o.Id == orderId, cancellationToken);
@@ -80,19 +83,52 @@ public class OrderService(ProductService productService, RainforestContext dbCon
             throw new ArgumentException($"Order with username {datumResponse.Username} not found.");
         }
 
-        order.MinerResponse = datumResponse;
-        var totalShares = datumResponse.AcceptedShares;
+        if (order.Status is OrderStatus.Shipped or OrderStatus.Completed)
+        {
+            // No need to update the order if it's already shipped or completed
+            return;
+        }
 
-        if (totalShares > 0 && totalShares < order.QuotedAcceptedHashes)
+        // This calculation is very naive. We really should try to convert Difficulty & Shares into a hashrate, but for
+        // demo purposes on testnet this is good enough.
+        var oldResponse = order.MinerResponse;
+        double elapsedTimeSeconds = 0;
+        if (oldResponse == null)
+        {
+            elapsedTimeSeconds = 0;
+        }
+        else
+        {
+            elapsedTimeSeconds = datumResponse.SubscribeSecs - oldResponse.SubscribeSecs;
+        }
+
+        if (elapsedTimeSeconds < 0)
+        {
+            elapsedTimeSeconds = 0;
+        }
+
+        var inferredHashes = datumResponse.HashrateTerahashesPerSecond * elapsedTimeSeconds * 1_000_000_000_000;
+
+        order.MinerResponse = datumResponse;
+        order.AcceptedHashes += (decimal)inferredHashes;
+        var totalHashes = order.AcceptedHashes;
+
+        if (totalHashes > 0 && totalHashes < order.QuotedAcceptedHashes)
         {
             order.Status = OrderStatus.Mining;
         }
-        else if (totalShares >= order.QuotedAcceptedHashes)
+        else if (totalHashes >= order.QuotedAcceptedHashes)
         {
             order.Status = OrderStatus.Completed;
         }
 
-        order.Progress = totalShares / order.QuotedAcceptedHashes;
+        var progress = totalHashes / order.QuotedAcceptedHashes;
+        if (progress > 1)
+        {
+            progress = 1;
+        }
+
+        order.Progress = progress;
         dbContext.Orders.Update(order);
         await dbContext.SaveChangesAsync(cancellationToken);
     }

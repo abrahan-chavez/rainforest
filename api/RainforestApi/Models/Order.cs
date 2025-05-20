@@ -26,6 +26,7 @@ public record Order
     public required string Password { get; init; }
 
     public decimal QuotedAcceptedHashes { get; init; }
+    public decimal AcceptedHashes { get; set; }
 
     public DatumResponse? MinerResponse { get; set; }
 
