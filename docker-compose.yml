@@ -35,12 +35,9 @@ services:
   api:
     build: ./api
     environment:
-      REDIS_HOST: redis
       DATUM_BASE_URL: http://datum:8080
       REDIS_PORT: 6379
       ASPNETCORE_URLS: http://0.0.0.0:5030
-    depends_on:
-      - redis
     ports:
       - "5030:5030"
     volumes:
