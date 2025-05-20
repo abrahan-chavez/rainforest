@@ -66,7 +66,7 @@ public class ProductService(RainforestContext context)
                 {
                     Name             = "High-Five with the Devs",
                     Description      = "Personal high-five & photo op at Riot demo booth",
-                    Image            = "https://source.unsplash.com/featured/?handshake",
+                    Image            = "rainforest/five.png",
                     ShippingRequired = false,
                     PriceUSD         = 1,
                     StockQuantity    = 100
@@ -75,34 +75,25 @@ public class ProductService(RainforestContext context)
                 {
                     Name             = "Dinner with the Dev Team",
                     Description      = "Casual bite with two devs at Venetian Café",
-                    Image            = "https://source.unsplash.com/featured/?dinner-table",
+                    Image            = "rainforest/dinner.png",
                     ShippingRequired = false,
                     PriceUSD         = 10,
-                    StockQuantity    = 4
+                    StockQuantity    = 2
                 },
                 new Product
                 {
                     Name             = "NerdMiner",
                     Description      = "A NerdMiner device delivered in-person at the Riot Booth",
-                    Image            = "https://source.unsplash.com/featured/?badge",
+                    Image            = "https://m.media-amazon.com/images/I/51tbySoSVYL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
                     ShippingRequired = false,
                     PriceUSD         = 30,
                     StockQuantity    = 1
                 },
                 new Product
                 {
-                    Name             = "Riot Bucket Hat",
-                    Description      = "BTC++ × Riot limited bucket hat; pick up at Riot booth swag table",
-                    Image            = "https://source.unsplash.com/featured/?bucket-hat",
-                    ShippingRequired = false,
-                    PriceUSD         = 5,
-                    StockQuantity    = 5
-                },
-                new Product
-                {
                     Name             = "Code-Review Lightning Round",
                     Description      = "15-min one-on-one critique with a lead dev",
-                    Image            = "https://source.unsplash.com/featured/?code-review",
+                    Image            = "rainforest/code.png",
                     ShippingRequired = false,
                     PriceUSD         = 5,
                     StockQuantity    = 25
@@ -111,34 +102,34 @@ public class ProductService(RainforestContext context)
                 {
                     Name             = "Dev Karaoke Challenge",
                     Description      = "2-song face-off",
-                    Image            = "https://source.unsplash.com/featured/?karaoke",
+                    Image            = "rainforest/karaoke.png",
                     ShippingRequired = false,
                     PriceUSD         = 10,
                     StockQuantity    = 5
                 },
                 new Product
                 {
-                    Name             = "Personalized CLI Alias",
-                    Description      = "Your alias in our next release notes + photo",
-                    Image            = "https://source.unsplash.com/featured/?terminal",
+                    Name             = "Memorialized in the CLI",
+                    Description      = "Your alias in our next release notes",
+                    Image            = "rainforest/cli.png",
                     ShippingRequired = false,
                     PriceUSD         = 5,
                     StockQuantity    = 5
                 },
                 new Product
                 {
-                    Name             = "St. Mark’s Square Selfie",
-                    Description      = "Piazza photo-op with devs",
-                    Image            = "https://source.unsplash.com/featured/?piazza",
+                    Name             = "Selfie by the Gondola with a Dev",
+                    Description      = "Photo-op with devs, gondola ride not included",
+                    Image            = "rainforest/gondola.png",
                     ShippingRequired = false,
                     PriceUSD         = 1,
                     StockQuantity    = 25
                 },
                 new Product
                 {
-                    Name             = "Crypto-Cocktails at Rosina",
-                    Description      = "Devs buy you a signature cocktail at Rosina lounge",
-                    Image            = "https://source.unsplash.com/featured/?cocktail",
+                    Name             = "Crypto-Cocktails at Venetian",
+                    Description      = "Devs buy you a signature cocktail at the Venetian lounge",
+                    Image            = "rainforest/cocktails.png",
                     ShippingRequired = false,
                     PriceUSD         = 10,
                     StockQuantity    = 2
@@ -147,10 +138,19 @@ public class ProductService(RainforestContext context)
                 {
                     Name             = "Morning Coffee with Devs",
                     Description      = "Espresso run before show opens",
-                    Image            = "https://source.unsplash.com/featured/?coffee",
+                    Image            = "/rainforest/coffee.png",
                     ShippingRequired = false,
-                    PriceUSD         = 5,
+                    PriceUSD         = 10,
                     StockQuantity    = 4
+                },
+                new Product
+                {
+                    Name             = "One Hand of Black Jack ($25 value)",
+                    Description      = "Play a hand of blackjack with a dev at the Venetian Casino",
+                    Image            = "/rainforest/blackjack.png",
+                    ShippingRequired = false,
+                    PriceUSD         = 15,
+                    StockQuantity    = 1
                 }
             };
         
