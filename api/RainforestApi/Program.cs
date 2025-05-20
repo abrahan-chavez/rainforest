@@ -49,6 +49,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 app.UseHttpsRedirection();
 
+app.MapGet("/", () => "Hello from Rainforest API!");
+
 app.MapGet("/orders",
         async (OrderService orderService, CancellationToken cancellationToken) =>
             await orderService.GetOrders(cancellationToken))
@@ -119,6 +121,12 @@ app.MapPost("/admin/clear",
         await dbContext.SaveChangesAsync(cancellationToken);
         transaction.Commit();
         return Results.NoContent();
+    });
+
+app.MapPost("/admin/migrate",
+    async (RainforestContext dbContext, CancellationToken cancellationToken) =>
+    {
+        await dbContext.Database.MigrateAsync(cancellationToken);
     });
 
 app.Run();

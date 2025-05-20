@@ -15,7 +15,6 @@ public sealed class RainforestContext : DbContext
     {
         var path = Environment.CurrentDirectory;
         DbPath = Path.Join(path, "rainforest.db");
-        Database.Migrate();
     }
 
     // The following configures EF to create a Sqlite database file in the
