@@ -38,8 +38,7 @@
             <div>
               <h2 class="font-medium text-lg">{{ order()?.product?.name }}</h2>
               <p class="text-sm">
-                {{ order()?.product?.priceInAcceptedShares | number }} shares
-                required
+                ~{{ formatHashes(order()?.quotedAcceptedHashes!) | number : "1.2-2" }} hashing days
               </p>
               <p class="text-sm">
                 (${{ order()?.product?.priceUSD | number : "1.2-2" }}

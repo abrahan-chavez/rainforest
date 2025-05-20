@@ -3,7 +3,7 @@ using RainforestApi.Models;
 
 namespace RainforestApi;
 
-public class OrderService(ProductService productService, RainforestContext dbContext)
+public class OrderService(ProductService productService, RainforestContext dbContext, HashRateConversionService hashRateConversionService)
 {
     private readonly string _stratumUrl = "stratum+tcp://44.210.122.181:23334";
     private readonly string _password = "x";
@@ -31,6 +31,9 @@ public class OrderService(ProductService productService, RainforestContext dbCon
         
         product.StockQuantity--;
         
+        var usdPerHash = await hashRateConversionService.GetUsdPerHash(cancellationToken);
+        var hashPrice = product.PriceUSD / usdPerHash;
+        
         var workerName = Guid.NewGuid().ToString("N");
         var order = new Order
         {
@@ -46,7 +49,7 @@ public class OrderService(ProductService productService, RainforestContext dbCon
             StratumUrl = _stratumUrl,
             WorkerName = $"worker.{workerName}",
             Password = _password,
-            QuotedAcceptedSharePrice = product.PriceInAcceptedShares,
+            QuotedAcceptedHashes = hashPrice,
         };
 
         dbContext.Orders.Add(order);
@@ -80,16 +83,16 @@ public class OrderService(ProductService productService, RainforestContext dbCon
         order.MinerResponse = datumResponse;
         var totalShares = datumResponse.AcceptedShares;
 
-        if (totalShares > 0 && totalShares < order.QuotedAcceptedSharePrice)
+        if (totalShares > 0 && totalShares < order.QuotedAcceptedHashes)
         {
             order.Status = OrderStatus.Mining;
         }
-        else if (totalShares >= order.QuotedAcceptedSharePrice)
+        else if (totalShares >= order.QuotedAcceptedHashes)
         {
             order.Status = OrderStatus.Completed;
         }
 
-        order.Progress = totalShares / order.QuotedAcceptedSharePrice;
+        order.Progress = totalShares / order.QuotedAcceptedHashes;
         dbContext.Orders.Update(order);
         await dbContext.SaveChangesAsync(cancellationToken);
     }

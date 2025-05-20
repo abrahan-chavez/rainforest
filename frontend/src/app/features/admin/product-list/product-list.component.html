@@ -25,7 +25,7 @@
         <tr>
           <th></th>
           <th>Product</th>
-          <th>Price (Accepted Shares)</th>
+          <th>Price (Hashing Days)</th>
           <th>Approx. Price (USD)</th>
           <th>Description</th>
           <th>Actions</th>
@@ -38,7 +38,7 @@
             {{ $index + 1 }}
           </th>
           <td>{{ product.name }}</td>
-          <td>{{ product.priceInAcceptedShares }} shares</td>
+          <td>~{{ fetchHashTime(product) | number : "1.2-2" }} hashing days</td>
           <td>${{ product.priceUSD }}</td>
           <td>{{ product.description }}</td>
           <td>

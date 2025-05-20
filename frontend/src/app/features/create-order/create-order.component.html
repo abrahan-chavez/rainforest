@@ -41,7 +41,7 @@
             <div>
               <h2 class="font-medium text-lg">{{ product()?.name }}</h2>
               <p class="text-sm">
-                {{ product()?.priceInAcceptedShares | number }} shares required
+                ~{{ fetchHashTime().toFixed(2) }} hashing days
               </p>
               <p class="text-sm">
                 (${{ product()?.priceUSD | number : "1.2-2" }} equivalent)

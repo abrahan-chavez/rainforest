@@ -12,8 +12,7 @@ public record Product
 
     public bool ShippingRequired { get; init; }
 
-    public decimal PriceInAcceptedShares { get; init; }
-    public decimal PriceUSD => PriceInAcceptedShares / 10_000;
+    public decimal PriceUSD { get; init; }
 
     public bool IsActive { get; set; } = true;
     

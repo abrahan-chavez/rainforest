@@ -4,6 +4,7 @@ import { CreateProductRequest } from '../../../models/product';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HashRateService } from '../../../services/hashrate.service';
 
 @Component({
   selector: 'app-create-product',
@@ -12,6 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './create-product.component.css',
 })
 export class CreateProductComponent {
+  private readonly hashRateService = inject(HashRateService);
   productName = model<string>('');
   productPrice = model<number>(0);
   productDescription = model<string>('');
@@ -28,13 +30,26 @@ export class CreateProductComponent {
     );
   });
 
+  hashTime = computed(() => {
+    const priceUsd = this.productPrice();
+    if (priceUsd > 0) {
+      return this.fetchHashTime(priceUsd);
+    }
+    return 0;
+  });
+
+  fetchHashTime(priceUsd: number) {
+    const hashTime = this.hashRateService.resolveHashTime(priceUsd);
+    return hashTime;
+  }
+
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
 
   createProduct() {
     const createProductRequest = {
       name: this.productName(),
-      priceInAcceptedShares: this.productPrice(),
+      priceUsd: this.productPrice(),
       stockQuantity: this.stockQuantity(),
       image: this.productImageUrl(),
       description: this.productDescription(),

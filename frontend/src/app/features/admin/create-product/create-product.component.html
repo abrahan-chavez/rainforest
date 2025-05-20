@@ -15,10 +15,9 @@
         required
       />
     </div>
-
     <div>
       <label class="label">
-        <span class="label-text">Product Price</span>
+        <span class="label-text">Product Price (USD)</span>
       </label>
       <input
         type="number"
@@ -28,14 +27,16 @@
         required
       />
     </div>
-        <div>
+    <p class="text-sm">(Approximately {{ hashTime() | number: '1.1-2' }} hashing days)</p>
+    <div>
       <label class="label">
         <span class="label-text">Stock Quantity</span>
       </label>
       <input
         type="number"
         [(ngModel)]="stockQuantity"
-        name="stockQuantity" step="1"
+        name="stockQuantity"
+        step="1"
         class="input input-bordered w-full"
         required
       />

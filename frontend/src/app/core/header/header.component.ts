@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HashRateService } from '../../services/hashrate.service';
 
 @Component({
   selector: 'app-header',
@@ -15,4 +16,6 @@ export class HeaderComponent {
     const input = event.target as HTMLInputElement;
     this.searchQuery = input.value;
   }
+
+  readonly hashRateService = inject(HashRateService);
 }

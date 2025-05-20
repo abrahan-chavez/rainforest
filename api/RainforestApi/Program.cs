@@ -24,6 +24,7 @@ builder.Services.AddDbContext<RainforestContext>(options =>
 });
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddHttpClient<HashRateConversionService>();
 builder.Services.AddHttpClient<DatumService>()
     .ConfigureHttpClient(client =>
     {
@@ -72,7 +73,7 @@ app.MapGet("/orders/{orderId:guid}",
     .WithName("GetOrder")
     .WithOpenApi();
 
-app.MapPost("/orders/{orderId:guid}/ship", 
+app.MapPost("/orders/{orderId:guid}/ship",
         async (Guid orderId, OrderService orderService, CancellationToken cancellationToken) =>
         {
             await orderService.MarkOrderAsShipped(orderId, cancellationToken);
@@ -109,6 +110,10 @@ app.MapPost("/products/{productId:guid}/activate",
             await productService.ChangeProductActivationStatus(productId, true, cancellationToken))
     .WithName("ActivateProduct")
     .WithOpenApi();
+
+app.MapGet("utilities/hashprice",
+    async (HashRateConversionService hashRateConversionService, CancellationToken cancellationToken) =>
+        await hashRateConversionService.GetHashPrice(cancellationToken));
 
 app.MapPost("/admin/clear",
     async (RainforestContext dbContext, CancellationToken cancellationToken) =>

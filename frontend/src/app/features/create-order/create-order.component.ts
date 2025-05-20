@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CreateFormComponent } from './create-form/create-form.component';
 import { MiningInstructionsComponent } from '../../shared/mining-instructions/mining-instructions.component';
+import { HashRateService } from '../../services/hashrate.service';
 
 @Component({
   selector: 'app-create-order',
@@ -16,9 +17,15 @@ import { MiningInstructionsComponent } from '../../shared/mining-instructions/mi
 export class CreateOrderComponent {
   private readonly productService = inject(ProductService);
   private readonly route = inject(ActivatedRoute);
+  private readonly hashRateService = inject(HashRateService);
 
   productId = computed(() => this.route.snapshot.paramMap.get('productId'));
   product = this.productService.getProduct(this.productId() ?? '');
+
+  fetchHashTime() {
+    const hashTime = this.hashRateService.resolveHashTime(this.product()!.priceUSD);
+    return hashTime;
+  }
 
   order = signal<Order | null>(null);
 

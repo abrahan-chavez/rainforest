@@ -7,6 +7,6 @@ public record ProductRequest
     public string? Image { get; init; } = null!;
     public bool ShippingRequired { get; init; }
 
-    public decimal PriceInAcceptedShares { get; init; }
+    public decimal PriceUsd { get; init; }
     public int StockQuantity { get; set; }
 }

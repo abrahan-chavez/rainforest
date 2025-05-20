@@ -4,6 +4,7 @@ import { ProductService } from '../../../services/product.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HashRateService } from '../../../services/hashrate.service';
 
 @Component({
   selector: 'app-product-list',
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ProductListComponent {
   private readonly productService = inject(ProductService);
+  private readonly hashRateService = inject(HashRateService);
   products: Signal<Product[] | null>;
 
   searchTerm = model<string>('');
@@ -33,6 +35,11 @@ export class ProductListComponent {
 
   activateProduct(product: Product) {
     this.productService.activateProduct(product.id);
+  }
+
+  fetchHashTime(product: Product) {
+    const hashTime = this.hashRateService.resolveHashTime(product.priceUSD);
+    return hashTime;
   }
 
   constructor() {

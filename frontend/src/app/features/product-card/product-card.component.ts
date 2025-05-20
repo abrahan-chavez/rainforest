@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Product } from '../../models/product';
 import { RouterLink } from '@angular/router';
+import { HashRateService } from '../../services/hashrate.service';
 
 @Component({
   selector: 'app-product-card',
@@ -11,13 +12,10 @@ import { RouterLink } from '@angular/router';
 export class ProductCardComponent {
   product = input.required<Product>();
 
-  formatHashes(hashes: number) {
-    if (hashes >= 1000000) {
-      return `${(hashes / 1000000).toFixed(1)}M`;
-    }
-    if (hashes >= 1000) {
-      return `${(hashes / 1000).toFixed(1)}K`;
-    }
-    return hashes.toString();
+  private readonly hashRateService = inject(HashRateService);
+
+  fetchHashTime() {
+    const hashTime = this.hashRateService.resolveHashTime(this.product().priceUSD);
+    return hashTime;
   }
 }

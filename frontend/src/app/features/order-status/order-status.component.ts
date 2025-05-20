@@ -3,9 +3,8 @@ import { OrderService } from '../../services/order.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Order, OrderStatus } from '../../models/order';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../models/product';
-import { ProductService } from '../../services/product.service';
 import { MiningInstructionsComponent } from '../../shared/mining-instructions/mining-instructions.component';
+import { HashRateService } from '../../services/hashrate.service';
 
 @Component({
   selector: 'app-order-status',
@@ -16,6 +15,7 @@ import { MiningInstructionsComponent } from '../../shared/mining-instructions/mi
 export class OrderStatusComponent {
   private readonly orderService = inject(OrderService);
   private readonly route = inject(ActivatedRoute);
+  private readonly hashRateService = inject(HashRateService);
 
   order = signal<Order | null>(null);
   error = signal<string | null>(null);
@@ -63,5 +63,9 @@ export class OrderStatusComponent {
       default:
         return '';
     }
+  }
+
+  formatHashes(hashes: number) {
+    return this.hashRateService.resolveHashTimeFromHashes(hashes) / 1e12 / 86400;
   }
 }

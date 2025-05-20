@@ -10,7 +10,7 @@ export interface Order {
   stratumUrl: string;
   workerName: string;
   password: string;
-  quotedAcceptedSharePrice: number;
+  quotedAcceptedHashes: number;
   progress: number;
 }
 
