@@ -99,6 +99,15 @@ app.MapGet("/products/{productId:guid}",
     .WithName("GetProduct")
     .WithOpenApi();
 
+app.MapPut("/products/seed",
+    async (ProductService productService, CancellationToken cancellationToken) =>
+    {
+        await productService.SeedProducts(cancellationToken);
+        return Results.Ok(new { seeded = true });
+    })
+        .WithName("SeedProducts")
+    .WithOpenApi();
+
 app.MapPost("/products/{productId:guid}/deactivate",
         async (Guid productId, ProductService productService, CancellationToken cancellationToken) =>
             await productService.ChangeProductActivationStatus(productId, false, cancellationToken))
